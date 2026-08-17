@@ -1,0 +1,2932 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ProfAI Secure v6</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --bg:#0b0b1a;--surface:#12122a;--card:#181830;--glass:rgba(24,24,48,0.7);
+  --border:#2a2a55;--primary:#6366f1;--primary-light:#818cf8;--accent:#22c55e;--danger:#ef4444;--warn:#f59e0b;
+  --text:#e8e8f5;--text-secondary:#9393b8;--radius:16px;--shadow:0 8px 32px rgba(0,0,0,0.45);
+}
+body.light{
+  --bg:#f0f2f8;--surface:#ffffff;--card:#f8f9fc;--glass:rgba(255,255,255,0.75);
+  --border:#d8dce8;--text:#1a1a2e;--text-secondary:#6b6b8a;--shadow:0 8px 32px rgba(0,0,0,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Inter',Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;transition:background .4s,color .4s}
+.page{display:none;height:100vh;flex-direction:column;animation:fadeIn .4s ease}
+.page.show{display:flex}
+
+.landing-bg{position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(99,102,241,0.15) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(34,197,94,0.1) 0%,transparent 50%),var(--bg);z-index:-1}
+.landing{justify-content:center;align-items:center;padding:24px;text-align:center}
+.landing-card{background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--radius);padding:40px 32px;width:100%;max-width:480px;box-shadow:var(--shadow);animation:slideUp .5s ease}
+.landing-logo{font-size:3.2rem;margin-bottom:8px}
+.landing h1{font-size:1.9rem;font-weight:800;margin-bottom:6px;background:linear-gradient(135deg,var(--primary-light),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.landing-sub{font-size:.95rem;color:var(--text-secondary);margin-bottom:28px}
+.role-btns{display:flex;flex-direction:column;gap:14px;margin-bottom:22px}
+.role-btn{width:100%;padding:16px;border-radius:14px;border:1px solid var(--border);background:var(--card);color:var(--text);font-weight:700;font-size:1.05rem;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:14px;text-align:left}
+.role-btn:hover{border-color:var(--primary-light);transform:translateY(-2px);box-shadow:0 8px 24px rgba(99,102,241,0.2)}
+.role-btn .icon{font-size:1.8rem}
+.role-btn .txt{flex:1}
+.role-btn .txt small{display:block;font-size:.82rem;color:var(--text-secondary);font-weight:500;margin-top:2px}
+.landing-footer{margin-top:20px;font-size:.78rem;color:var(--text-secondary);line-height:1.6}
+.landing-footer strong{color:var(--primary-light)}
+
+.setup-card{background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--radius);padding:36px 32px;width:100%;max-width:520px;box-shadow:var(--shadow);animation:slideUp .5s ease}
+.setup-card h2{font-size:1.5rem;font-weight:800;margin-bottom:4px}
+.setup-card .sub{color:var(--text-secondary);font-size:.9rem;margin-bottom:22px}
+
+.cred-label{font-size:.85rem;font-weight:600;color:var(--text-secondary)}
+
+
+.auth{justify-content:center;align-items:center;padding:24px;text-align:center}
+.auth-card{background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:var(--radius);padding:36px 32px;width:100%;max-width:440px;box-shadow:var(--shadow);animation:slideUp .5s ease}
+.auth-card h2{font-size:1.5rem;font-weight:800;margin-bottom:4px}
+.auth-card .sub{color:var(--text-secondary);font-size:.9rem;margin-bottom:22px}
+.auth-form{display:flex;flex-direction:column;gap:14px;text-align:left}
+.auth-label{font-size:.82rem;font-weight:600;color:var(--text-secondary);margin-bottom:4px}
+.auth-input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.95rem;outline:none;transition:border-color .2s,box-shadow .2s;font-family:inherit}
+.auth-input:focus{border-color:var(--primary-light);box-shadow:0 0 0 3px rgba(99,102,241,0.15)}
+.auth-btn{width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--primary),#4f46e5);color:#fff;font-weight:700;font-size:1.05rem;cursor:pointer;transition:transform .2s,box-shadow .2s;margin-top:6px}
+.auth-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(99,102,241,0.35)}
+.auth-link{text-align:center;font-size:.88rem;color:var(--text-secondary);margin-top:14px}
+.auth-link a{color:var(--primary-light);cursor:pointer;text-decoration:underline}
+.auth-back{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;border:none;background:transparent;color:var(--text-secondary);font-size:.85rem;cursor:pointer;transition:color .2s;margin:0 auto 14px}
+.auth-back:hover{color:var(--text)}
+
+.dash{flex:1;overflow-y:auto;padding:24px}
+.dash-card{max-width:700px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow)}
+.dash-card h2{font-size:1.25rem;font-weight:700;margin-bottom:4px}
+.dash-card .sub{color:var(--text-secondary);font-size:.88rem;margin-bottom:22px}
+.dash-section{margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.dash-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.dash-section h3{font-size:.95rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--primary-light)}
+.dash-field{margin-bottom:12px}
+.dash-field label{display:block;font-size:.8rem;font-weight:600;color:var(--text-secondary);margin-bottom:4px}
+.dash-field input,.dash-field select{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.92rem;outline:none;font-family:inherit;transition:border-color .2s}
+.dash-field input:focus,.dash-field select:focus{border-color:var(--primary-light)}
+.dash-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.dash-save{width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--primary),#4f46e5);color:#fff;font-weight:700;font-size:1rem;cursor:pointer;transition:opacity .2s;margin-top:6px}
+.dash-save:hover{opacity:.92}
+.dash-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;max-width:700px;margin-left:auto;margin-right:auto}
+.dash-top h2{font-size:1.3rem;font-weight:800}
+.dash-actions{display:flex;gap:10px}
+.student-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:8px}
+.student-table th,.student-table td{padding:10px 8px;border-bottom:1px solid var(--border);text-align:left}
+.student-table th{color:var(--text-secondary);font-size:.78rem;text-transform:uppercase;letter-spacing:.5px}
+.student-table tr:last-child td{border-bottom:none}
+.empty-state{text-align:center;padding:30px;color:var(--text-secondary);font-size:.9rem}
+
+.app{display:flex;height:100vh;flex-direction:row}
+.sidebar{width:300px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;transition:transform .3s;z-index:20}
+.sidebar-header{padding:18px 16px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.sidebar-header h2{font-size:1.15rem;font-weight:800;color:var(--primary-light);display:flex;align-items:center;gap:10px}
+.user-badge{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s}
+.user-badge:hover{background:var(--border)}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700;color:#fff}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:.88rem;font-weight:600;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.user-meta{font-size:.75rem;color:var(--text-secondary)}
+.new-chat-btn{width:calc(100% - 32px);margin:12px 16px 0;padding:11px 14px;border-radius:12px;border:none;background:var(--primary);color:#fff;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:8px;font-size:.95rem}
+.new-chat-btn:hover{opacity:.92;transform:translateY(-1px)}
+.tabs{display:flex;margin:12px 16px 0;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:var(--card)}
+.tab{flex:1;padding:9px 0;border:none;background:transparent;color:var(--text-secondary);font-size:.78rem;cursor:pointer;transition:all .2s;font-weight:600}
+.tab.active{background:var(--primary);color:#fff}
+.conv-list{flex:1;overflow-y:auto;padding:8px 12px;display:none}
+.conv-list.show{display:block}
+.conv-item{padding:11px 12px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all .2s;margin-bottom:4px;font-size:.88rem;position:relative}
+.conv-item:hover{background:var(--border)}
+.conv-item.active{background:var(--border);font-weight:600}
+.conv-icon{font-size:1.1rem;flex-shrink:0}
+.conv-title{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.conv-del{background:transparent;border:none;cursor:pointer;opacity:0;transition:opacity .2s;padding:2px 6px;font-size:1rem;color:var(--danger)}
+.conv-item:hover .conv-del{opacity:1}
+.homework-list{padding:8px 12px;display:none;flex:1;overflow-y:auto}
+.homework-list.show{display:block}
+.hw-empty{text-align:center;padding:40px 20px;color:var(--text-secondary);font-size:.9rem}
+.homework-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px;margin-bottom:8px;cursor:pointer;transition:all .2s}
+.homework-card:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.hw-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.hw-title{font-weight:600;font-size:.95rem}
+.hw-meta{display:flex;justify-content:space-between;font-size:.8rem;color:var(--text-secondary)}
+.hw-status.done{color:var(--accent);font-weight:600}
+.hw-status.todo{color:var(--warn);font-weight:600}
+.clear-btn{width:calc(100% - 32px);margin:0 16px 12px;padding:9px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text-secondary);font-size:.8rem;cursor:pointer;transition:background .2s}
+.clear-btn:hover{background:var(--border);color:var(--text)}
+.sidebar-footer{padding:12px 16px;border-top:1px solid var(--border);font-size:.72rem;color:var(--text-secondary);text-align:center;line-height:1.5}
+
+.progress-box{padding:10px 16px;border-bottom:1px solid var(--border)}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.progress-level{font-weight:700;font-size:.8rem;color:var(--accent)}
+.progress-xp{font-size:.75rem;color:var(--text-secondary)}
+.progress-bar{height:8px;border-radius:4px;background:var(--border);overflow:hidden}
+.progress-fill{height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,var(--accent),#16a34a);transition:width .5s ease}
+.progress-msg{font-size:.72rem;color:var(--text-secondary);margin-top:6px;font-style:italic;min-height:1.2em}
+
+.main{flex:1;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.topbar{height:60px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:var(--surface);z-index:10}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.menu-btn{display:none;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;border:none;background:var(--card);color:var(--text);cursor:pointer;font-size:1.1rem}
+.topbar-title{font-weight:700;font-size:1rem;flex:1;text-align:center}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{width:38px;height:38px;border-radius:10px;border:none;background:var(--card);color:var(--text);cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.icon-btn:hover{background:var(--border);transform:translateY(-1px)}
+.status{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--text-secondary);margin-right:8px}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--text-secondary);display:inline-block;transition:background .3s}
+.status-dot.online{background:var(--accent)}
+.status-dot.offline{background:var(--danger)}
+.status-dot.checking{background:var(--warn);animation:pulse 1s infinite}
+
+.chat-area{flex:1;overflow-y:auto;padding:24px 18px;display:flex;flex-direction:column;gap:18px;scroll-behavior:smooth}
+.welcome{text-align:center;max-width:680px;margin:auto;padding:50px 20px}
+.welcome h1{font-size:1.7rem;margin-bottom:14px;font-weight:800;background:linear-gradient(135deg,var(--primary-light),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.welcome p{color:var(--text-secondary);font-size:.95rem;line-height:1.6;margin-bottom:28px}
+.suggestions{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.suggestion-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:all .2s;text-align:left}
+.suggestion-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:var(--primary)}
+.suggestion-card strong{display:block;margin-bottom:6px;font-size:.95rem;color:var(--primary-light)}
+.suggestion-card span{font-size:.83rem;color:var(--text-secondary);line-height:1.4}
+
+.msg-wrapper{display:flex;gap:12px;max-width:92%;animation:fadeIn .3s ease}
+.msg-wrapper.user{flex-direction:row-reverse;margin-left:auto}
+.msg-wrapper.ai{margin-right:auto}
+.msg-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;background:var(--border);user-select:none}
+.msg-avatar.user{background:linear-gradient(135deg,var(--primary),#4f46e5);color:#fff}
+.msg-avatar.ai{background:linear-gradient(135deg,var(--accent),#16a34a);color:#fff}
+.msg-body{background:var(--card);border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:4px;padding:14px 16px;font-size:.94rem;line-height:1.6;max-width:calc(100% - 56px);overflow-wrap:break-word;position:relative}
+.msg-wrapper.user .msg-body{background:linear-gradient(135deg,var(--primary),#4f46e5);color:#fff;border-color:transparent;border-bottom-right-radius:4px;border-bottom-left-radius:16px}
+.msg-time{font-size:.72rem;color:var(--text-secondary);margin-top:8px}
+.msg-wrapper.user .msg-time{color:rgba(255,255,255,.65)}
+.msg-actions{display:flex;gap:8px;margin-top:8px;opacity:0;transition:opacity .2s}
+.msg-wrapper:hover .msg-actions{opacity:1}
+.msg-action-btn{background:var(--border);border:none;color:var(--text-secondary);cursor:pointer;font-size:.85rem;padding:5px 10px;border-radius:8px;transition:all .2s}
+.msg-action-btn:hover{background:var(--primary);color:#fff}
+.msg-file{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-top:10px;max-width:300px}
+.file-icon{font-size:1.2rem}
+.file-name{font-size:.85rem;font-weight:600;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.file-size{font-size:.75rem;color:var(--text-secondary)}
+.msg-wrapper.user .msg-file{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff}
+.msg-wrapper.user .msg-file .file-size{color:rgba(255,255,255,.7)}
+
+/* AI structured response styling */
+.msg-body .ai-section{margin:14px 0;padding:14px;background:var(--bg);border-radius:12px;border-left:3px solid var(--primary)}
+.msg-body .ai-section h4{font-size:.95rem;font-weight:700;color:var(--primary-light);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.msg-body .ai-section p{margin:6px 0;line-height:1.6}
+.msg-body .ai-section ul,.msg-body .ai-section ol{padding-left:1.5em;margin:6px 0}
+.msg-body .ai-section li{margin:4px 0}
+.msg-body .ai-tip{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:10px;padding:10px 14px;margin:10px 0;font-size:.88rem}
+.msg-body .ai-tip strong{color:var(--accent)}
+.msg-body .ai-warning{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:10px;padding:10px 14px;margin:10px 0;font-size:.88rem}
+.msg-body .ai-warning strong{color:var(--warn)}
+.msg-body .ai-error-note{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:10px 14px;margin:10px 0;font-size:.88rem}
+.msg-body .ai-error-note strong{color:var(--danger)}
+
+/* ====== BEAUTIFUL MARKDOWN RENDERING IN AI MESSAGES ====== */
+.msg-body{font-size:.94rem;line-height:1.7;color:var(--text);word-wrap:break-word;overflow-wrap:break-word}
+.msg-body h1,.msg-body h2,.msg-body h3,.msg-body h4,.msg-body h5,.msg-body h6{margin:18px 0 10px;font-weight:700;line-height:1.3;color:var(--text)}
+.msg-body h1{font-size:1.5rem;background:linear-gradient(135deg,var(--primary-light),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;border-bottom:2px solid var(--border);padding-bottom:8px}
+.msg-body h2{font-size:1.3rem;color:var(--primary-light);border-bottom:1px solid var(--border);padding-bottom:6px}
+.msg-body h3{font-size:1.12rem;color:var(--primary-light);display:flex;align-items:center;gap:8px}
+.msg-body h3::before{content:'';display:inline-block;width:4px;height:18px;background:var(--primary);border-radius:4px;flex-shrink:0}
+.msg-body h4{font-size:1rem;color:var(--primary-light)}
+.msg-body h5{font-size:.95rem;color:var(--text-secondary)}
+.msg-body h6{font-size:.9rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px}
+.msg-body p{margin:8px 0;line-height:1.7}
+.msg-body p:first-child{margin-top:0}
+.msg-body p:last-child{margin-bottom:0}
+.msg-body ul,.msg-body ol{padding-left:1.4em;margin:8px 0}
+.msg-body ul{list-style:none}
+.msg-body ul>li{position:relative;padding-left:4px;margin:5px 0}
+.msg-body ul>li::before{content:'▸';position:absolute;left:-1.2em;color:var(--primary-light);font-weight:700;font-size:.85rem}
+.msg-body ol{list-style:none;counter-reset:ai-ol}
+.msg-body ol>li{position:relative;padding-left:4px;margin:5px 0;counter-increment:ai-ol}
+.msg-body ol>li::before{content:counter(ai-ol) '.';position:absolute;left:-1.8em;color:var(--primary-light);font-weight:700;font-size:.82rem}
+.msg-body li>ul,.msg-body li>ol{margin:4px 0}
+.msg-body strong{color:var(--text);font-weight:700}
+.msg-body em{color:var(--text-secondary);font-style:italic}
+.msg-body a{color:var(--primary-light);text-decoration:none;border-bottom:1px solid rgba(99,102,241,0.3);transition:all .2s}
+.msg-body a:hover{color:#a5b4fc;border-bottom-color:var(--primary-light)}
+.msg-body hr{border:none;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:16px 0}
+.msg-body img{max-width:100%;border-radius:12px;margin:10px 0;border:1px solid var(--border);box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.msg-body code:not(pre code){background:rgba(99,102,241,0.15);color:var(--primary-light);padding:2px 8px;border-radius:6px;font-size:.85em;font-family:'Fira Code','Courier New',monospace;border:1px solid rgba(99,102,241,0.2)}
+
+/* Table styling */
+.msg-body table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.88rem;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.msg-body thead{background:var(--bg)}
+.msg-body th{padding:10px 14px;text-align:left;font-weight:700;color:var(--primary-light);border-bottom:2px solid var(--border);font-size:.85rem;text-transform:uppercase;letter-spacing:.3px}
+.msg-body td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text)}
+.msg-body tbody tr:nth-child(even){background:rgba(99,102,241,0.04)}
+.msg-body tbody tr:hover{background:rgba(99,102,241,0.08)}
+.msg-body tbody tr:last-child td{border-bottom:none}
+
+/* Blockquote styling — default */
+.msg-body blockquote{margin:12px 0;padding:14px 18px;border-left:4px solid var(--primary);background:rgba(99,102,241,0.08);border-radius:0 10px 10px 0;color:var(--text);font-style:normal}
+.msg-body blockquote p{margin:4px 0}
+.msg-body blockquote blockquote{margin:8px 0;border-left-color:var(--text-secondary);background:rgba(147,147,184,0.08)}
+
+/* Callout blocks — mapped from emoji blockquotes */
+.msg-body .callout{margin:14px 0;padding:14px 18px;border-radius:12px;border-left:4px solid;display:flex;gap:12px;align-items:flex-start;font-style:normal;animation:fadeIn .3s ease}
+.msg-body .callout-icon{font-size:1.3rem;flex-shrink:0;line-height:1;margin-top:1px}
+.msg-body .callout-body{flex:1;min-width:0}
+.msg-body .callout-body p{margin:4px 0}
+.msg-body .callout-body p:first-child{margin-top:0}
+.msg-body .callout-body p:last-child{margin-bottom:0}
+.msg-body .callout-tip{background:rgba(34,197,94,0.1);border-left-color:var(--accent)}
+.msg-body .callout-tip .callout-icon{color:var(--accent)}
+.msg-body .callout-tip strong{color:var(--accent)}
+.msg-body .callout-warning{background:rgba(245,158,11,0.1);border-left-color:var(--warn)}
+.msg-body .callout-warning .callout-icon{color:var(--warn)}
+.msg-body .callout-warning strong{color:var(--warn)}
+.msg-body .callout-error{background:rgba(239,68,68,0.1);border-left-color:var(--danger)}
+.msg-body .callout-error .callout-icon{color:var(--danger)}
+.msg-body .callout-error strong{color:var(--danger)}
+.msg-body .callout-success{background:rgba(34,197,94,0.12);border-left-color:#10b981}
+.msg-body .callout-success .callout-icon{color:#10b981}
+.msg-body .callout-success strong{color:#10b981}
+.msg-body .callout-info{background:rgba(99,102,241,0.1);border-left-color:var(--primary)}
+.msg-body .callout-info .callout-icon{color:var(--primary-light)}
+.msg-body .callout-info strong{color:var(--primary-light)}
+.msg-body .callout-quote{background:rgba(147,147,184,0.08);border-left-color:var(--text-secondary)}
+.msg-body .callout-quote .callout-icon{color:var(--text-secondary)}
+
+/* Code blocks enhanced */
+.msg-body pre{background:var(--bg);border:1px solid var(--border);border-radius:10px;margin:12px 0;overflow:hidden}
+.msg-body pre code{display:block;padding:14px 16px;font-family:'Fira Code','Courier New',monospace;font-size:.84rem;line-height:1.6;overflow-x:auto}
+
+/* Subtle separator between AI sections */
+.msg-body > h3:not(:first-child){margin-top:22px;position:relative}
+.msg-body > h3:not(:first-child)::after{content:'';display:block;height:1px;background:linear-gradient(90deg,var(--primary),transparent);margin-top:4px;opacity:.3}
+
+/* Smooth transitions for interactive elements inside messages */
+.msg-body a,.msg-body .code-copy-btn,.msg-body .msg-apply-webdev-btn{transition:all .2s ease}
+.msg-body table tr{transition:background .15s ease}
+
+/* Inline keyboard keys */
+.msg-body kbd{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:.82em;font-family:'Fira Code',monospace;color:var(--text-secondary);box-shadow:0 1px 2px rgba(0,0,0,.3)}
+
+/* Mark / highlight */
+.msg-body mark{background:rgba(245,158,11,0.25);color:var(--text);padding:1px 4px;border-radius:3px}
+
+/* Definition lists */
+.msg-body dl{margin:10px 0}
+.msg-body dt{font-weight:700;color:var(--primary-light);margin-top:8px}
+.msg-body dd{margin-left:1em;color:var(--text-secondary);margin-top:2px}
+
+/* Code block copy button */
+.code-block-wrapper{position:relative;margin:10px 0}
+.code-copy-btn{position:absolute;top:8px;right:8px;background:var(--primary);color:#fff;border:none;padding:5px 10px;border-radius:6px;font-size:.75rem;cursor:pointer;opacity:0;transition:opacity .2s}
+.code-block-wrapper:hover .code-copy-btn{opacity:1}
+.code-copy-btn:hover{opacity:.85}
+.code-copy-btn.copied{background:var(--accent)}
+
+.input-area{border-top:1px solid var(--border);padding:14px 18px;background:var(--surface);display:flex;flex-direction:column;gap:8px}
+.input-row{display:flex;align-items:flex-end;gap:10px}
+.input-wrapper{flex:1;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:10px 14px;transition:border-color .2s,box-shadow .2s}
+.input-wrapper:focus-within{border-color:var(--primary-light);box-shadow:0 0 0 3px rgba(99,102,241,0.12)}
+.textarea-input{width:100%;background:transparent;border:none;color:var(--text);font-size:.95rem;resize:none;outline:none;font-family:inherit;max-height:160px;min-height:24px;line-height:1.45}
+.input-toolbar{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.input-hint{font-size:.75rem;color:var(--text-secondary)}
+.input-actions{display:flex;gap:6px;align-items:center}
+.input-action-btn{background:transparent;border:none;color:var(--text-secondary);font-size:1.15rem;cursor:pointer;padding:5px;border-radius:8px;transition:all .2s}
+.input-action-btn:hover{background:var(--border);color:var(--text)}
+.input-action-btn.recording{color:var(--danger);animation:pulse 1s infinite}
+.send-btn{width:44px;height:44px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--primary),#4f46e5);color:#fff;cursor:pointer;font-size:1.15rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.send-btn:hover{transform:scale(1.05);box-shadow:0 4px 16px rgba(99,102,241,0.35)}
+.send-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.file-chips{display:flex;gap:6px;flex-wrap:wrap}
+.file-chip{background:var(--border);color:var(--text);font-size:.82rem;padding:5px 10px;border-radius:8px;display:flex;align-items:center;gap:5px}
+.file-chip .remove{cursor:pointer;color:var(--danger);font-weight:700}
+.typing{display:flex;gap:6px;align-items:center;padding:6px 0}
+.typing span{width:8px;height:8px;border-radius:50%;background:var(--text-secondary);animation:blink 1.4s infinite both}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+
+.teach-panel{display:none;flex-direction:column;gap:14px;padding:18px;background:var(--card);border-top:1px solid var(--border);max-height:240px;overflow-y:auto}
+.teach-panel.show{display:flex}
+.teach-header{display:flex;align-items:center;justify-content:space-between;font-size:.9rem;font-weight:600;color:var(--text-secondary)}
+.teach-subjects{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.teach-chip{padding:7px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-secondary);font-size:.83rem;cursor:pointer;transition:all .2s}
+.teach-chip:hover{background:var(--border);color:var(--text)}
+.teach-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.teach-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.teach-actions button{flex:1;min-width:130px;padding:9px 12px;border-radius:10px;border:none;background:var(--surface);color:var(--text);font-size:.83rem;cursor:pointer;transition:all .2s;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;gap:6px}
+.teach-actions button:hover{background:var(--border);transform:translateY(-1px)}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:100;opacity:0;transition:opacity .2s;backdrop-filter:blur(4px)}
+.modal.show{display:flex;opacity:1}
+.modal-content{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);width:92%;max-width:600px;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow);animation:slideUp .25s ease}
+.modal-header{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.modal-header h3{font-size:1.05rem;font-weight:700}
+.modal-body{padding:18px;overflow-y:auto;flex:1;font-size:.9rem;line-height:1.55}
+.modal-footer{padding:14px 18px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+.close-btn{background:transparent;border:none;color:var(--text-secondary);font-size:1.2rem;cursor:pointer;padding:4px 8px;border-radius:6px;transition:background .2s}
+.close-btn:hover{background:var(--border);color:var(--text)}
+.btn-primary{padding:9px 16px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--primary),#4f46e5);color:#fff;font-size:.87rem;font-weight:600;cursor:pointer;transition:opacity .2s}
+.btn-primary:hover{opacity:.92}
+.btn-secondary{padding:9px 16px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.87rem;cursor:pointer;transition:background .2s}
+.btn-secondary:hover{background:var(--border)}
+.btn-danger{padding:9px 16px;border-radius:10px;border:none;background:var(--danger);color:#fff;font-size:.87rem;font-weight:600;cursor:pointer;transition:opacity .2s}
+.btn-danger:hover{opacity:.9}
+
+.hw-modal-body{font-size:.93rem;line-height:1.65}
+.hw-modal-body h1,.hw-modal-body h2,.hw-modal-body h3{margin:.8em 0 .4em}
+.hw-modal-body p{margin:.4em 0}
+.hw-modal-body ul,.hw-modal-body ol{padding-left:1.5em;margin:.4em 0}
+.hw-modal-body pre{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;overflow-x:auto;font-size:.85rem}
+.hw-modal-body code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.85rem}
+.hw-modal-body .callout{margin:10px 0;padding:12px 16px;border-radius:10px;border-left:4px solid;display:flex;gap:10px;align-items:flex-start}
+.hw-modal-body .callout-icon{font-size:1.1rem;flex-shrink:0}
+.hw-modal-body .callout-body{flex:1;min-width:0}
+.hw-modal-body .callout-body p{margin:3px 0}
+.hw-modal-body .callout-tip{background:rgba(34,197,94,0.1);border-left-color:var(--accent)}
+.hw-modal-body .callout-warning{background:rgba(245,158,11,0.1);border-left-color:var(--warn)}
+.hw-modal-body .callout-error{background:rgba(239,68,68,0.1);border-left-color:var(--danger)}
+.hw-modal-body .callout-success{background:rgba(34,197,94,0.12);border-left-color:#10b981}
+.hw-modal-body .callout-info{background:rgba(99,102,241,0.1);border-left-color:var(--primary)}
+.hw-modal-body .callout-quote{background:rgba(147,147,184,0.08);border-left-color:var(--text-secondary)}
+.hw-modal-body blockquote{margin:10px 0;padding:10px 14px;border-left:3px solid var(--primary);background:rgba(99,102,241,0.08);border-radius:0 8px 8px 0}
+.hw-export-btns{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.camera-modal .modal-content{max-width:660px}
+.camera-preview{background:#000;border-radius:14px;overflow:hidden;position:relative;min-height:260px;display:flex;align-items:center;justify-content:center}
+.camera-preview video{width:100%;display:block}
+.camera-preview img{width:100%;display:block;border-radius:14px;object-fit:contain;max-height:60vh}
+.camera-placeholder{color:var(--text-secondary);font-size:1rem}
+.camera-controls{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.camera-controls button{min-width:130px}
+.ocr-result textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:12px;font-family:inherit;resize:vertical;min-height:130px;font-size:.9rem}
+
+/* Stats modal */
+.stats-modal .modal-content{max-width:700px}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+.stat-card .stat-num{font-size:1.8rem;font-weight:800;color:var(--primary-light)}
+.stat-card .stat-label{font-size:.78rem;color:var(--text-secondary);margin-top:4px;font-weight:600}
+.stats-table{width:100%;border-collapse:collapse;font-size:.85rem;margin-top:12px}
+.stats-table th,.stats-table td{padding:10px 8px;border-bottom:1px solid var(--border);text-align:left}
+.stats-table th{color:var(--text-secondary);font-size:.75rem;text-transform:uppercase;letter-spacing:.5px}
+.stats-table tr:last-child td{border-bottom:none}
+.stats-table td.num{font-weight:700;color:var(--primary-light)}
+.error-chart{margin-top:16px}
+.error-chart h4{font-size:.9rem;font-weight:700;margin-bottom:10px;color:var(--primary-light)}
+.error-bar{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.error-bar-label{width:100px;font-size:.82rem;color:var(--text-secondary);text-align:right;flex-shrink:0}
+.error-bar-track{flex:1;height:20px;background:var(--border);border-radius:10px;overflow:hidden}
+.error-bar-fill{height:100%;border-radius:10px;transition:width .5s ease}
+.error-bar-fill.maths{background:var(--primary)}
+.error-bar-fill.francais{background:var(--warn)}
+.error-bar-fill.physique{background:var(--accent)}
+.error-bar-fill.svt{background:#ec4899}
+.error-bar-fill.histoire{background:#f97316}
+.error-bar-fill.anglais{background:#06b6d4}
+.error-bar-fill.techno{background:#8b5cf6}
+.error-bar-fill.general{background:var(--text-secondary)}
+.error-bar-count{font-size:.78rem;font-weight:700;color:var(--text);min-width:30px}
+
+.lock-overlay{position:fixed;inset:0;background:rgba(11,11,26,.96);z-index:250;display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px;padding:24px}
+.lock-overlay.show{display:flex}
+.lock-overlay h2{font-size:1.5rem;font-weight:700}
+.lock-overlay p{color:var(--text-secondary);font-size:.92rem}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--surface);color:var(--text);padding:11px 20px;border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow);font-size:.9rem;z-index:300;opacity:0;transition:all .35s;pointer-events:none;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.overlay-mobile{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:15;display:none;opacity:0;transition:opacity .2s}
+.overlay-mobile.show{display:block;opacity:1}
+
+.settings-group{margin-bottom:16px}
+.settings-label{display:block;font-size:.85rem;font-weight:600;margin-bottom:6px;color:var(--text-secondary)}
+.settings-select{width:100%;padding:9px 11px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.9rem;outline:none;cursor:pointer}
+.settings-input{width:100%;padding:9px 11px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:.9rem;outline:none;font-family:inherit}
+.key-toggle{background:transparent;border:none;color:var(--text-secondary);cursor:pointer;font-size:1rem;padding:4px 8px;border-radius:6px;transition:background .2s}
+.key-toggle:hover{background:var(--border);color:var(--text)}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+.hljs{border-radius:8px;padding:12px;font-size:.85rem;overflow-x:auto}
+@media(max-width:768px){
+.sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%)}
+.sidebar.open{transform:translateX(0)}
+.menu-btn{display:flex}
+.topbar-title{font-size:.9rem}
+.msg-wrapper{max-width:96%}
+.suggestions{grid-template-columns:1fr}
+.teach-actions button{flex:1 1 100%}
+.camera-controls button{flex:1 1 45%}
+.dash-row{grid-template-columns:1fr}
+.stats-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+/* ====== WEBDEV PAGE ====== */
+.webdev-page{background:var(--bg);height:100vh;flex-direction:column}
+.webdev-topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:var(--surface);border-bottom:1px solid var(--border)}
+.webdev-topbar-left,.webdev-topbar-right{display:flex;align-items:center;gap:8px}
+.webdev-title{font-weight:700;font-size:1rem;color:var(--text)}
+.webdev-tabs{display:flex;gap:0;background:var(--surface);border-bottom:1px solid var(--border);padding:0 14px}
+.webdev-tab{padding:8px 18px;border:none;background:none;color:var(--text-secondary);font-weight:600;font-size:.85rem;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s}
+.webdev-tab.active{color:var(--primary-light);border-bottom-color:var(--primary)}
+.webdev-tab:hover{color:var(--text)}
+.webdev-split{display:flex;flex:1;overflow:hidden}
+.webdev-code-pane{flex:1;display:flex;flex-direction:column;min-width:0;border-right:1px solid var(--border)}
+.webdev-editor{flex:1;resize:none;border:none;outline:none;padding:14px;font-family:'Courier New',monospace;font-size:.88rem;background:var(--card);color:var(--text);line-height:1.6;tab-size:2;white-space:pre;overflow:auto}
+.webdev-preview-pane{flex:1;display:flex;flex-direction:column;min-width:0}
+.webdev-preview{flex:1;border:none;background:#fff;width:100%;height:100%}
+.webdev-status-bar{display:flex;justify-content:space-between;align-items:center;padding:4px 14px;background:var(--surface);border-top:1px solid var(--border);font-size:.75rem;color:var(--text-secondary)}
+@media(max-width:768px){.webdev-split{flex-direction:column}.webdev-code-pane,.webdev-preview-pane{flex:1}.webdev-code-pane{border-right:none;border-bottom:1px solid var(--border);max-height:45vh}.webdev-editor{max-height:40vh}}
+
+/* WebDev Project Manager & AI Integration */
+.webdev-project-select{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:.82rem;cursor:pointer;max-width:180px}
+.webdev-project-select:focus{outline:none;border-color:var(--primary)}
+.webdev-ai-dialog{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;display:flex;align-items:center;justify-content:center}
+.webdev-ai-dialog-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:90%;max-width:600px;max-height:80vh;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.webdev-ai-dialog-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)}
+.webdev-ai-dialog-header h3{margin:0;font-size:1.1rem;color:var(--text)}
+.webdev-ai-dialog-body{padding:20px;flex:1;overflow-y:auto}
+.webdev-ai-prompt-area{width:100%;min-height:100px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:.9rem;resize:vertical;font-family:inherit}
+.webdev-ai-prompt-area:focus{outline:none;border-color:var(--primary)}
+.webdev-ai-presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.webdev-ai-preset{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--text-secondary);font-size:.8rem;cursor:pointer;transition:all .2s}
+.webdev-ai-preset:hover{border-color:var(--primary);color:var(--primary-light);background:rgba(99,102,241,0.1)}
+.webdev-ai-preset.active{border-color:var(--primary);color:var(--primary-light);background:rgba(99,102,241,0.15)}
+.webdev-ai-dialog-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 20px;border-top:1px solid var(--border)}
+.msg-apply-webdev-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:16px;border:1px solid var(--accent);background:rgba(34,197,94,0.1);color:var(--accent);font-size:.78rem;cursor:pointer;transition:all .2s;margin-left:6px}
+.msg-apply-webdev-btn:hover{background:rgba(34,197,94,0.2);transform:scale(1.02)}
+.webdev-project-actions{display:flex;gap:4px;align-items:center}
+
+/* ====== PYTHON STUDIO ====== */
+.pydev-page{background:var(--bg);height:100vh;flex-direction:column}
+.pydev-topbar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:var(--surface);border-bottom:1px solid var(--border)}
+.pydev-topbar-left,.pydev-topbar-right{display:flex;align-items:center;gap:8px}
+.pydev-title{font-weight:700;font-size:1rem;color:var(--text)}
+.pydev-pkg-bar{display:flex;align-items:center;gap:6px;padding:4px 14px;background:var(--surface);border-bottom:1px solid var(--border)}
+.pydev-pkg-input{flex:1;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:.82rem;font-family:inherit;outline:none}
+.pydev-pkg-input:focus{border-color:var(--primary)}
+.pydev-pkg-btn{padding:4px 12px;border-radius:6px;border:1px solid var(--primary);background:rgba(99,102,241,0.1);color:var(--primary-light);font-size:.8rem;cursor:pointer;transition:all .2s}
+.pydev-pkg-btn:hover{background:rgba(99,102,241,0.2)}
+.pydev-pkg-list{display:flex;gap:4px;flex-wrap:wrap;max-width:50%}
+.pydev-pkg-tag{padding:2px 8px;border-radius:10px;background:rgba(34,197,94,0.1);color:var(--accent);font-size:.72rem;border:1px solid rgba(34,197,94,0.3)}
+.pydev-split{display:flex;flex:1;overflow:hidden}
+.pydev-code-pane{flex:1;display:flex;flex-direction:column;min-width:0;border-right:1px solid var(--border)}
+.pydev-editor{flex:1;resize:none;border:none;outline:none;padding:14px;font-family:'Courier New',monospace;font-size:.88rem;background:var(--card);color:var(--text);line-height:1.6;tab-size:4;white-space:pre;overflow:auto}
+.pydev-output-pane{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--card)}
+.pydev-output-header{display:flex;justify-content:space-between;align-items:center;padding:6px 14px;background:var(--surface);border-bottom:1px solid var(--border);font-size:.8rem;color:var(--text-secondary)}
+.pydev-output{flex:1;padding:14px;font-family:'Courier New',monospace;font-size:.85rem;color:var(--accent);line-height:1.6;overflow:auto;white-space:pre-wrap;word-break:break-all}
+.pydev-output .py-error{color:var(--danger)}
+.pydev-output .py-graph{max-width:100%;text-align:center;margin:8px 0}
+.pydev-output .py-graph img{max-width:100%;border-radius:8px;border:1px solid var(--border)}
+.pydev-status-bar{display:flex;justify-content:space-between;align-items:center;padding:4px 14px;background:var(--surface);border-top:1px solid var(--border);font-size:.75rem;color:var(--text-secondary)}
+.pydev-run-btn{padding:6px 16px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.pydev-run-btn:hover{filter:brightness(1.1);transform:scale(1.02)}
+.pydev-run-btn:disabled{opacity:.5;cursor:not-allowed}
+.pydev-loading-overlay{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--card);z-index:10;gap:16px}
+.pydev-loading-overlay .spinner{width:48px;height:48px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pydev-project-select{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:.82rem;cursor:pointer;max-width:180px}
+.pydev-project-select:focus{outline:none;border-color:var(--primary)}
+.pydev-project-actions{display:flex;gap:4px;align-items:center}
+/* Python AI Dialog */
+.pydev-ai-dialog{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);z-index:1000;display:flex;align-items:center;justify-content:center}
+.pydev-ai-dialog-content{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:90%;max-width:600px;max-height:80vh;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.pydev-ai-dialog-header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border)}
+.pydev-ai-dialog-header h3{margin:0;font-size:1.1rem;color:var(--text)}
+.pydev-ai-dialog-body{padding:20px;flex:1;overflow-y:auto}
+.pydev-ai-prompt-area{width:100%;min-height:100px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:12px;font-size:.9rem;resize:vertical;font-family:inherit}
+.pydev-ai-prompt-area:focus{outline:none;border-color:var(--primary)}
+.pydev-ai-presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pydev-ai-preset{padding:6px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);color:var(--text-secondary);font-size:.8rem;cursor:pointer;transition:all .2s}
+.pydev-ai-preset:hover{border-color:var(--primary);color:var(--primary-light);background:rgba(99,102,241,0.1)}
+.pydev-ai-preset.active{border-color:var(--primary);color:var(--primary-light);background:rgba(99,102,241,0.15)}
+.pydev-ai-dialog-footer{display:flex;justify-content:flex-end;gap:10px;padding:16px 20px;border-top:1px solid var(--border)}
+.msg-apply-pydev-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:16px;border:1px solid var(--accent);background:rgba(34,197,94,0.1);color:var(--accent);font-size:.78rem;cursor:pointer;transition:all .2s;margin-left:6px}
+.msg-apply-pydev-btn:hover{background:rgba(34,197,94,0.2);transform:scale(1.02)}
+@media(max-width:768px){.pydev-split{flex-direction:column}.pydev-code-pane,.pydev-output-pane{flex:1}.pydev-code-pane{border-right:none;border-bottom:1px solid var(--border);max-height:45vh}.pydev-editor{max-height:40vh}.pydev-pkg-bar{flex-wrap:wrap}.pydev-pkg-list{max-width:100%}}
+
+/* Image preview thumbnails */
+.file-chip-thumb{width:48px;height:48px;object-fit:cover;border-radius:8px;margin-right:6px;border:1px solid var(--border);}
+.file-chip img+.remove{align-self:center;}
+/* Drag-and-drop overlay */
+.chat-area{position:relative;}
+.chat-area.drag-over::after{content:'D\00e9pose l\2019image ici';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);color:var(--primary);font-size:1.4rem;font-weight:600;border:3px dashed var(--primary);border-radius:16px;z-index:100;pointer-events:none;}
+</style>
+</head>
+<body class="dark">
+
+<!-- ===================== PAGE CHOIX ROLE ===================== -->
+<div class="page landing show" id="rolePage">
+  <div class="landing-bg"></div>
+  <div class="landing-card">
+    <div class="landing-logo">🤖</div>
+    <h1>ProfAI Secure</h1>
+    <p class="landing-sub">Ton assistant pédagogique propulsé par l’IA</p>
+    <div class="role-btns">
+      <button class="role-btn" style="max-width:380px" id="btnRoleStudent"><span class="icon">🎓</span><span class="txt">Élève<small>Apprendre, réviser et progresser avec l’IA</small></span></button>
+    </div>
+    <div class="landing-footer">
+      🔒 Sécurisé — Données locales 
+    </div>
+  </div>
+</div>
+
+<!-- ===================== STUDENT LOGIN ===================== -->
+<div class="page auth" id="studentLoginPage">
+  <div class="landing-bg"></div>
+  <div class="auth-card">
+    <button class="auth-back" id="backStudentLogin">← Retour</button>
+    <h2>🎓 Connexion Élève</h2>
+    <p class="sub">Retrouve ton espace d'apprentissage</p>
+    <div class="auth-form">
+      <div>
+        <div class="auth-label">👤 Prénom</div>
+        <input class="auth-input" id="sLoginName" placeholder="Ex: Thomas" maxlength="30">
+      </div>
+      <div>
+        <div class="auth-label">🔑 Code PIN (4 chiffres)</div>
+        <input class="auth-input" id="sLoginPin" type="password" placeholder="1234" maxlength="4" inputmode="numeric" style="text-align:center;letter-spacing:8px;font-size:1.1rem">
+      </div>
+      <button class="auth-btn" id="sLoginBtn">Se connecter</button>
+      <p class="auth-link">Pas encore de compte ? <a id="goStudentRegister">S'inscrire</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== STUDENT REGISTER ===================== -->
+<div class="page auth" id="studentRegisterPage">
+  <div class="landing-bg"></div>
+  <div class="auth-card">
+    <button class="auth-back" id="backStudentRegister">← Retour</button>
+    <h2>🎓 Inscription Élève</h2>
+    <p class="sub">Crée ton compte pour accéder à ProfAI</p>
+    <div class="auth-form">
+      <div>
+        <div class="auth-label">👤 Prénom</div>
+        <input class="auth-input" id="sRegName" placeholder="Ex: Thomas" maxlength="30">
+      </div>
+      <div class="dash-row">
+        <div>
+          <div class="auth-label">🏫 Classe</div>
+          <input class="auth-input" id="sRegClass" placeholder="3ème A" maxlength="15">
+        </div>
+        <div>
+          <div class="auth-label">🏫 École</div>
+          <input class="auth-input" id="sRegSchool" placeholder="Collège/Lycée" maxlength="30">
+        </div>
+      </div>
+      <div>
+        <div class="auth-label">🏅 Niveau scolaire</div>
+        <select class="auth-input" id="sRegLevel" style="cursor:pointer">
+          <option value="college">Collège</option>
+          <option value="lycee">Lycée</option>
+          <option value="superieur">Supérieur</option>
+          <option value="general">Général</option>
+        </select>
+      </div>
+      <div>
+        <div class="auth-label">🔑 Code PIN (4 chiffres)</div>
+        <input class="auth-input" id="sRegPin" type="password" placeholder="1234" maxlength="4" inputmode="numeric" style="text-align:center;letter-spacing:8px;font-size:1.1rem">
+      </div>
+      <button class="auth-btn" id="sRegBtn">Créer mon compte</button>
+      <p class="auth-link">Déjà un compte ? <a id="goStudentLogin">Se connecter</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== APP PRINCIPALE ===================== -->
+<div class="page" id="appPage">
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header"><h2><span>🤖</span> ProfAI</h2><span style="font-size:1.2rem">🔒</span></div>
+  <div class="user-badge" id="userBadge">
+    <div class="user-avatar" id="userAvatar">?</div>
+    <div class="user-info">
+      <div class="user-name" id="userName">Élève</div>
+      <div class="user-meta" id="userMeta">-</div>
+    </div>
+    <span>❯</span>
+  </div>
+  <div class="progress-box" id="progressBox">
+    <div class="progress-top"><span class="progress-level" id="progressLevel">Niveau 1</span><span class="progress-xp" id="progressXp">0 / 100 XP</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-msg" id="progressMsg"></div>
+  </div>
+  <button class="new-chat-btn" id="newChatBtn"><span>➕</span> Nouvelle conversation</button>
+  <div class="tabs">
+    <button class="tab active" id="tabChat">💬 Chat</button>
+    <button class="tab" id="tabTeach">📚 Enseign.</button>
+    <button class="tab" id="tabStats">📊 Stats</button>
+  </div>
+  <div class="conv-list show" id="convList"><div id="convItems"></div></div>
+  <div class="homework-list" id="homeworkList">
+    <div class="hw-empty" id="hwEmpty">Aucun devoir sauvegardé.<br>Génère un devoir depuis l'onglet Enseignement.</div>
+    <div id="hwItems"></div>
+    <button class="clear-btn" id="clearAllHw">🗑️ Tout supprimer</button>
+  </div>
+  <div class="sidebar-footer">
+    <strong>ProfAI Secure v6</strong><br>
+    🔒 Tes données restent locales
+  </div>
+</aside>
+<div class="overlay-mobile" id="overlayMobile"></div>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="menu-btn" id="menuBtn">☰</button>
+      <span class="topbar-title" id="chatTitle">Nouvelle conversation</span>
+    </div>
+    <div class="topbar-actions">
+      <div class="status"><span class="status-dot" id="statusDot"></span><span id="statusText">Vérification...</span></div>
+      <button class="icon-btn" id="camBtn" title="Caméra/OCR">📷</button>
+      <button class="icon-btn" id="webdevBtn" title="WebDev">☉️</button>
+      <button class="icon-btn" id="pydevBtn" title="Python Studio">🐍</button>
+      <button class="icon-btn" id="statsBtn" title="Statistiques">📊</button>
+      <button class="icon-btn" id="settingsBtn" title="Paramètres">⚙️</button>
+      <button class="icon-btn" id="lockBtn" title="Verrouiller">🔒</button>
+      <button class="icon-btn" id="logoutStudentBtn" title="Déconnexion">🚪</button>
+    </div>
+  </div>
+  <div class="chat-area" id="chatArea">
+    <div class="welcome" id="welcomeBox">
+      <h1>Bienvenue, <span id="welcomeName">élève</span> !</h1>
+      <p>ProfAI est ton assistant personnel pour apprendre, réviser, coder et progresser. Pose-moi des questions sur n'importe quelle matière ou demande-moi de t'aider à coder !</p>
+      <div class="suggestions">
+        <div class="suggestion-card" data-q="Explique-moi le théorème de Pythagore avec des exemples détaillés"><strong>📐 Maths</strong><span>Théorème de Pythagore</span></div>
+        <div class="suggestion-card" data-q="Résume la Révolution française avec les dates clés"><strong>🌍 Histoire</strong><span>La Révolution française</span></div>
+        <div class="suggestion-card" data-q="Aide-moi à coder une page web en HTML/CSS"><strong>💻 Code</strong><span>Créer un site web</span></div>
+        <div class="suggestion-card" data-q="Décris le fonctionnement d'une cellule en détail"><strong>🔬 SVT</strong><span>La cellule</span></div>
+        <div class="suggestion-card" data-q="Aide-moi à créer une page web avec HTML, CSS et JavaScript"><strong>🌐 WebDev</strong><span>Créer une page web</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="teach-panel" id="teachPanel">
+    <div class="teach-header"><span>📚 Mode Enseignement</span><span id="teachBadge" class="teach-badge">Actif</span></div>
+    <div class="teach-subjects" id="teachSubjects">
+      <button class="teach-chip active" data-subject="general">Général</button>
+      <button class="teach-chip" data-subject="maths">Maths</button>
+      <button class="teach-chip" data-subject="physique">Physique</button>
+      <button class="teach-chip" data-subject="svt">SVT</button>
+      <button class="teach-chip" data-subject="histoire">Histoire</button>
+      <button class="teach-chip" data-subject="francais">Français</button>
+      <button class="teach-chip" data-subject="anglais">Anglais</button>
+      <button class="teach-chip" data-subject="techno">Techno</button>
+    </div>
+    <div class="teach-actions">
+      <button id="btnGenerateLesson">📖 Leçon</button>
+      <button id="btnGenerateHomework">📝 Devoir</button>
+      <button id="btnGenerateQuiz">❓ Quiz</button>
+      <button id="btnGenerateCorrection">✍️ Correction</button>
+    </div>
+  </div>
+  <div class="input-area">
+    <div class="file-chips" id="fileChips"></div>
+    <div class="input-row">
+      <div class="input-wrapper">
+        <textarea class="textarea-input" id="inputField" rows="1" placeholder="Écris ta question ici..."></textarea>
+        <div class="input-toolbar">
+          <span class="input-hint">Entrée pour envoyer — Maj+Entrée pour saut de ligne</span>
+          <div class="input-actions">
+            <button class="input-action-btn" id="fileBtn" title="Joindre un fichier">📎</button>
+            <button class="input-action-btn" id="micBtn" title="Dicter">🎤</button>
+          </div>
+        </div>
+      </div>
+      <button class="send-btn" id="sendBtn">➤</button>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+
+<!-- WEBDEV PAGE -->
+<div class="page webdev-page" id="webdevPage">
+  <div class="webdev-topbar">
+    <div class="webdev-topbar-left">
+      <button class="icon-btn" id="webdevBackBtn" title="Retour">←</button>
+      <select class="webdev-project-select" id="webdevProjectSelect" title="Projet"></select>
+      <div class="webdev-project-actions">
+        <button class="icon-btn" id="webdevNewProjectBtn" title="Nouveau projet">+</button>
+        <button class="icon-btn" id="webdevRenameProjectBtn" title="Renommer">✏️</button>
+        <button class="icon-btn" id="webdevDeleteProjectBtn" title="Supprimer">🗑️</button>
+      </div>
+    </div>
+    <div class="webdev-topbar-right">
+      <button class="icon-btn" id="webdevAiBtn" title="Demander à l’IA">🤖</button>
+      <button class="icon-btn" id="webdevNewBtn" title="Nouveau fichier">📄</button>
+      <button class="icon-btn" id="webdevSaveBtn" title="Sauvegarder">💾</button>
+      <button class="icon-btn" id="webdevDownloadBtn" title="Télécharger">📥</button>
+    </div>
+  </div>
+  <div class="webdev-tabs">
+    <button class="webdev-tab active" data-tab="html">HTML</button>
+    <button class="webdev-tab" data-tab="css">CSS</button>
+    <button class="webdev-tab" data-tab="js">JS</button>
+    <button class="webdev-tab" data-tab="full">Aperçu complet</button>
+  </div>
+  <div class="webdev-split">
+    <div class="webdev-code-pane">
+      <textarea class="webdev-editor" id="webdevHtml" spellcheck="false" placeholder="Écris ton HTML ici..."></textarea>
+      <textarea class="webdev-editor" id="webdevCss" spellcheck="false" style="display:none" placeholder="Écris ton CSS ici..."></textarea>
+      <textarea class="webdev-editor" id="webdevJs" spellcheck="false" style="display:none" placeholder="Écris ton JavaScript ici..."></textarea>
+      <textarea class="webdev-editor" id="webdevFull" spellcheck="false" style="display:none" placeholder="Code HTML complet..."></textarea>
+    </div>
+    <div class="webdev-preview-pane">
+      <iframe class="webdev-preview" id="webdevPreview" sandbox="allow-scripts"></iframe>
+    </div>
+  </div>
+  <div class="webdev-status-bar">
+    <span id="webdevStatus">Prêt</span>
+    <span id="webdevAutoSave">Auto-sauvegarde: actif</span>
+  </div>
+</div>
+
+
+<!-- PYTHON STUDIO PAGE -->
+<div class="page pydev-page" id="pydevPage">
+  <div class="pydev-topbar">
+    <div class="pydev-topbar-left">
+      <button class="icon-btn" id="pydevBackBtn" title="Retour">←</button>
+      <select class="pydev-project-select" id="pydevProjectSelect" title="Projet Python"></select>
+      <div class="pydev-project-actions">
+        <button class="icon-btn" id="pydevNewProjectBtn" title="Nouveau projet">+</button>
+        <button class="icon-btn" id="pydevRenameProjectBtn" title="Renommer">✏️</button>
+        <button class="icon-btn" id="pydevDeleteProjectBtn" title="Supprimer">🗑️</button>
+      </div>
+    </div>
+    <div class="pydev-topbar-right">
+      <button class="pydev-run-btn" id="pydevRunBtn" title="Exécuter (Ctrl+Entrée)">▶ Exécuter</button>
+      <button class="icon-btn" id="pydevAiBtn" title="Demander à l’IA">🤖</button>
+      <button class="icon-btn" id="pydevNewBtn" title="Nouveau fichier">📄</button>
+      <button class="icon-btn" id="pydevSaveBtn" title="Sauvegarder">💾</button>
+      <button class="icon-btn" id="pydevDownloadBtn" title="Télécharger">📥</button>
+    </div>
+  </div>
+  <div class="pydev-pkg-bar">
+    <input class="pydev-pkg-input" id="pydevPkgInput" placeholder="Installer un package (ex: matplotlib, numpy)..." />
+    <button class="pydev-pkg-btn" id="pydevPkgInstallBtn">📦 Installer</button>
+    <div class="pydev-pkg-list" id="pydevPkgList"></div>
+  </div>
+  <div class="pydev-split">
+    <div class="pydev-code-pane">
+      <textarea class="pydev-editor" id="pydevEditor" spellcheck="false" placeholder="# Écris ton code Python ici...
+# Utilise Ctrl+Entrée pour exécuter
+
+print(&quot;Bonjour le monde !&quot;)"></textarea>
+    </div>
+    <div class="pydev-output-pane">
+      <div class="pydev-output-header">
+        <span>📤 Sortie</span>
+        <button class="icon-btn" id="pydevClearOutputBtn" title="Effacer la sortie" style="font-size:.8rem;padding:2px 8px">🗑️</button>
+      </div>
+      <div class="pydev-output" id="pydevOutput">
+        <span style="color:var(--text-secondary)">La sortie apparaîtra ici après l’exécution...</span>
+      </div>
+    </div>
+  </div>
+  <div class="pydev-status-bar">
+    <span id="pydevStatus">🐍 Python Studio — En attente de chargement...</span>
+    <span id="pydevAutoSave">Auto-sauvegarde: actif</span>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal" id="hwModal"><div class="modal-content"><div class="modal-header"><h3 id="hwModalTitle">Devoir</h3><button class="close-btn" id="hwModalClose">×</button></div><div class="modal-body hw-modal-body" id="hwModalBody"></div><div class="modal-footer"><button class="btn-secondary" id="hwModalDo">✍️ Répondre</button><button class="btn-secondary" id="hwModalDone">✅ Marquer fait</button></div></div></div>
+
+<div class="modal stats-modal" id="statsModal"><div class="modal-content"><div class="modal-header"><h3>📊 Statistiques & Progression</h3><button class="close-btn" id="statsModalClose">×</button></div><div class="modal-body" id="statsModalBody"></div></div></div>
+
+<div class="modal" id="settingsModal"><div class="modal-content"><div class="modal-header"><h3>⚙️ Paramètres rapides</h3><button class="close-btn" id="settingsModalClose">×</button></div><div class="modal-body"><div class="settings-group"><label class="settings-label">Thème</label><select class="settings-select" id="themeSelect"><option value="dark">Sombre</option><option value="light">Clair</option></select></div><div class="settings-group"><label class="settings-label">Niveau scolaire</label><select class="settings-select" id="levelSelect"><option value="college">Collège</option><option value="lycee">Lycée</option><option value="superieur">Supérieur</option><option value="general">Général</option></select></div><div class="settings-group"><label class="settings-label">Modèle IA</label><select class="settings-select" id="modelSelect"><option value="openai/gpt-oss-120b">GPT-OSS 120B</option><option value="qwen/qwen3.6-27b">Qwen 3.6 27B (multimodal)</option><option value="openai/gpt-oss-20b">GPT-OSS 20B (rapide)</option></select></div><div class="settings-group"><label class="settings-label">Créativité</label><input type="range" id="tempSlider" min="0" max="1" step="0.1" value="0.7" style="width:100%"><div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--text-secondary)"><span>Précis</span><span id="tempLabel">0.7</span><span>Créatif</span></div></div><div class="settings-group"><label class="settings-label">Verrouillage auto (minutes)</label><select class="settings-select" id="lockSelect"><option value="0">Désactivé</option><option value="3">3 min</option><option value="5" selected>5 min</option><option value="10">10 min</option><option value="15">15 min</option></select></div><div class="settings-group"><label class="settings-label">Voix (TTS)</label><select class="settings-select" id="voiceSelect"><option value="">Défaut système</option></select></div></div><div class="modal-footer"><button class="btn-primary" id="saveSettings">Enregistrer</button></div></div></div>
+
+<div class="modal camera-modal" id="cameraModal"><div class="modal-content"><div class="modal-header"><h3>📷 Caméra / OCR</h3><button class="close-btn" id="cameraModalClose">×</button></div><div class="modal-body"><div class="camera-preview"><video id="cameraVideo" autoplay playsinline></video><img id="cameraPhoto" style="display:none"><div class="camera-placeholder" id="cameraPlaceholder">Autorise l'accès à la caméra</div></div><div class="camera-controls"><button class="btn-primary" id="captureBtn">📷 Capturer</button><button class="btn-secondary" id="retakeBtn" style="display:none">🔄 Recommencer</button><button class="btn-secondary" id="ocrCameraBtn" style="display:none">🔍 Lire le texte</button><button class="btn-secondary" id="aiAnalyzeCameraBtn" style="display:none">🤖 Analyser avec l’IA</button><button class="btn-secondary" id="sendPhotoBtn" style="display:none">✉️ Envoyer</button></div></div></div></div>
+
+<div class="modal" id="ocrModal"><div class="modal-content"><div class="modal-header"><h3>🔍 Texte détecté</h3><button class="close-btn" id="ocrModalClose">×</button></div><div class="modal-body ocr-result"><textarea id="ocrText"></textarea></div><div class="modal-footer"><button class="btn-secondary" id="ocrCopyBtn">📋 Copier</button><button class="btn-primary" id="ocrSendBtn">✉️ Envoyer dans le chat</button></div></div></div>
+
+
+<!-- WebDev AI Dialog -->
+<div class="webdev-ai-dialog" id="webdevAiDialog" style="display:none">
+  <div class="webdev-ai-dialog-content">
+    <div class="webdev-ai-dialog-header">
+      <h3>🤖 Assistant IA WebDev</h3>
+      <button class="close-btn" id="webdevAiDialogClose">×</button>
+    </div>
+    <div class="webdev-ai-dialog-body">
+      <textarea class="webdev-ai-prompt-area" id="webdevAiPrompt" placeholder="Décris ce que tu veux créer, modifier ou corriger..."></textarea>
+      <div class="webdev-ai-presets">
+        <button class="webdev-ai-preset" data-preset="create">🌟 Créer un site</button>
+        <button class="webdev-ai-preset" data-preset="fix">🔧 Corriger un bug</button>
+        <button class="webdev-ai-preset" data-preset="feature">✨ Ajouter une fonctionnalité</button>
+        <button class="webdev-ai-preset" data-preset="redesign">🎨 Redesigner</button>
+        <button class="webdev-ai-preset" data-preset="optimize">⚡ Optimiser</button>
+        <button class="webdev-ai-preset" data-preset="responsive">📱 Rendre responsive</button>
+      </div>
+    </div>
+    <div class="webdev-ai-dialog-footer">
+      <button class="btn-secondary" id="webdevAiCancelBtn">Annuler</button>
+      <button class="btn-primary" id="webdevAiSendBtn">🤖 Envoyer à l’IA</button>
+    </div>
+  </div>
+</div>
+<!-- OVERLAYS -->
+<div class="lock-overlay" id="lockOverlay">
+  <div class="landing-logo">🔒</div>
+  <h2>Session verrouillée</h2>
+  <p>Ton application est en veille sécurisée</p>
+  <div style="display:flex;justify-content:center;margin:8px 0">
+    <input id="lockPin" placeholder="PIN" maxlength="4" inputmode="numeric" type="password" style="text-align:center;letter-spacing:8px;font-size:1.1rem;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);outline:none;width:160px">
+  </div>
+  <button class="auth-btn" style="max-width:200px;margin:0 auto" id="unlockBtn">Déverrouiller</button>
+</div>
+
+<div class="toast" id="toast"></div>
+<input type="file" id="fileInput" style="display:none" accept=".txt,.md,.csv,.json,.html,.css,.js,.py,.java,.c,.cpp,.xml,.sql,.pdf,.doc,.docx,.png,.jpg,.jpeg,image/*">
+
+<!-- Python AI Dialog -->
+<div class="pydev-ai-dialog" id="pydevAiDialog" style="display:none">
+  <div class="pydev-ai-dialog-content">
+    <div class="pydev-ai-dialog-header">
+      <h3>🤖 Assistant IA Python</h3>
+      <button class="close-btn" id="pydevAiDialogClose">×</button>
+    </div>
+    <div class="pydev-ai-dialog-body">
+      <textarea class="pydev-ai-prompt-area" id="pydevAiPrompt" placeholder="Décris ce que tu veux coder, analyser ou corriger..."></textarea>
+      <div class="pydev-ai-presets">
+        <button class="pydev-ai-preset" data-preset="create">⭐ Créer un script</button>
+        <button class="pydev-ai-preset" data-preset="fix">🔧 Corriger une erreur</button>
+        <button class="pydev-ai-preset" data-preset="algo">🧮 Algorithme</button>
+        <button class="pydev-ai-preset" data-preset="data">📊 Analyse de données</button>
+        <button class="pydev-ai-preset" data-preset="game">🎮 Mini-jeu</button>
+        <button class="pydev-ai-preset" data-preset="math">📐 Maths / Physique</button>
+      </div>
+    </div>
+    <div class="pydev-ai-dialog-footer">
+      <button class="btn-secondary" id="pydevAiCancelBtn">Annuler</button>
+      <button class="btn-primary" id="pydevAiSendBtn">🤖 Envoyer à l’IA</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===================== CONSTANTS & UTILS =====================
+const LS_KEY = 'profai_v6_accounts';
+const LS_CONV = 'profai_v6_conversations';
+const LS_HW = 'profai_v6_homework';
+const LS_SETTINGS = 'profai_v6_settings';
+const LS_PROGRESS = 'profai_v6_progress';
+const LS_ERRORS = 'profai_v6_errors';
+const LS_STATS = 'profai_v6_stats';
+// ===== TA CLE API GROQ ICI =====
+const GROQ_KEY = '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';
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_MODELS = 'https://api.groq.com/openai/v1/models';
+
+const SYSTEM_PROMPT = `Tu es ProfAI, un tuteur IA patient, pédagogique et expert. Tu DOIS structurer tes réponses de manière claire et divisée. Règles obligatoires :
+
+1. STRUCTURE : Chaque réponse longue doit être divisée en sections avec des titres clairs (utilise ### pour les titres de section).
+2. EXPLICATION DÉTAILLÉE : Ne jamais être vague. Explique chaque concept avec des exemples concrets, des analogies, et étapes numérotées.
+3. MISE EN PAGE : Utilise le formatage Markdown riche :
+   - **Gras** pour les termes importants
+   - *Italique* pour les nuances
+   - Listes à puces pour les énumérations
+   - Blocs de code avec langage spécifié (\`\`\`html, \`\`\`css, \`\`\`javascript, \`\`\`python, etc.)
+   - Tableaux Markdown quand c'est pertinent
+4. CONSEILS : Ajoute des encadrés > 💡 **Conseil** pour les astuces
+5. AVERTISSEMENTS : Ajoute > ⚠️ **Attention** pour les pièges courants
+6. ERREURS COURANTES : Quand tu corriges, identifie clairement chaque erreur avec > ❌ **Erreur** et montre la correction avec > ✅ **Correction**
+7. PROGRESSION : Commence simple, puis approfondis progressivement
+8. CODAGE : Tu es aussi un expert en développement web et app. Tu peux aider à coder des sites web (HTML/CSS/JS), des apps, du Python, etc. Fournis du code complet et fonctionnel.
+9. ANALYSE DE FICHIERS : Quand l'élève joint un fichier, analyse son contenu en détail et explique ce qu'il contient.
+10. ERREURS PASSÉES : Consulte la section des erreurs passées de l'élève pour adapter ton explication et éviter de répéter les mêmes erreurs.
+
+Tu réponds toujours en français sauf si on te demande explicitement une autre langue.
+
+11. ANALYSE D’IMAGE : Quand on t’envoie une image (photo ou fichier), analyse-la en détail : décris ce que tu vois, identifie les éléments visuels, les textes, le contexte, et toute information pertinente. Sois minutieux et structuré.
+
+12. WEBDEV STUDIO : Quand l’utilisateur te demande de créer, modifier ou gérer un site web via WebDev Studio, tu DOIS :
+    - Fournir du code COMPLET et PRêt à appliquer dans des blocs de code s\u00e9par\u00e9s (\`\`\`html, \`\`\`css, \`\`\`javascript)
+    - Chaque bloc doit être autonome et remplaçant intégralement le contenu de l’onglet correspondant
+    - Préciser clairement dans quel onglet (HTML/CSS/JS) chaque bloc doit être appliqué
+    - Ne JAMAIS fournir des fragments partiels ou des modifications en mode diff — donne toujours le code complet
+    - Si tu modifies un fichier existant, inclus TOUT le contenu modifié, pas juste les changements
+    - Ajoute des commentaires pour guider l’utilisateur sur les parties importantes
+    - Quand on te demande de créer un site, fournis un projet complet avec HTML, CSS et JS séparés
+    - Quand on te demande de corriger un bug, analyse le code fourni, identifie le problème et fournis le fichier corrigé en entier
+
+13. PYTHON STUDIO : Quand l’utilisateur te demande de créer ou modifier du code Python via Python Studio, tu DOIS :
+    - Fournir du code Python COMPLET et prêt à exécuter dans des blocs de code (\`\`\`python)
+    - Le code doit utiliser print() pour afficher des résultats dans la console de sortie
+    - Pour les graphiques, utilise matplotlib avec plt.savefig() pour générer des images PNG en base64
+    - Précise les packages nécessaires (numpy, pandas, matplotlib, etc.) que l’utilisateur devra installer via le gestionnaire de packages
+    - Ne JAMAIS utiliser input() car le code s’exécute dans un environnement navigateur (Pyodide)
+    - Quand tu corriges un bug, analyse le code fourni, identifie le problème et fournis le script corrigé en entier
+    - Ajoute des commentaires pour guider l’utilisateur sur les parties importantes du code
+    - Optimise pour l’exécution navigateur : évite les boucles infinies, les calculs trop lourds, et les opérations bloquantes`
+
+async function sha256(str) {
+  const buf = new TextEncoder().encode(str);
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+function $(id){ return document.getElementById(id); }
+function now(){ return new Date().toLocaleString('fr-FR',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'}); }
+function today(){ return new Date().toISOString().split('T')[0]; }
+function uuid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+function toast(msg){
+  const t=$('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
+// ====== MARKED.JS CONFIGURATION ======
+if(typeof marked!=="undefined"){
+  marked.use({
+    breaks:true,
+    gfm:true});
+}
+
+// ====== BLOCKQUOTE CALLOUT ENHANCER ======
+// Transforms blockquotes with emoji prefixes into styled callout divs
+function enhanceBlockquotes(container){
+  container.querySelectorAll("blockquote").forEach(bq=>{
+    // Get the first text content to detect emoji prefix
+    const firstP=bq.querySelector("p");
+    const raw=firstP?firstP.innerHTML:bq.innerHTML;
+    let calloutType="quote";
+    let icon="❝";
+    let prefix="";
+    // Detect emoji patterns
+    if(/^\s*💡/.test(raw)){calloutType="tip";icon="💡";prefix="💡";}
+    else if(/^\s*⚠️/.test(raw)||/^\s*⚠[\uFE0F]?/.test(raw)){calloutType="warning";icon="⚠️";prefix="⚠️";}
+    else if(/^\s*❌/.test(raw)){calloutType="error";icon="❌";prefix="❌";}
+    else if(/^\s*✅/.test(raw)){calloutType="success";icon="✅";prefix="✅";}
+    else if(/^\s*ℹ️/.test(raw)||/^\s*ℹ[\uFE0F]?/.test(raw)||/^\s*📌/.test(raw)){calloutType="info";icon="ℹ️";prefix="ℹ️";}
+    // Only transform if we detected a specific emoji callout pattern
+    if(prefix||calloutType!=="quote"){
+      // Remove emoji prefix from content if present
+      if(prefix&&firstP){
+        // Strip the leading emoji and optional space
+        firstP.innerHTML=firstP.innerHTML.replace(/^[\s\u200B\uFEFF]*(💡|⚠️|⚠[\uFE0F]?|❌|✅|ℹ️|ℹ[\uFE0F]?|📌)[\s]*/,"");
+      }
+      const callout=document.createElement("div");
+      callout.className="callout callout-"+calloutType;
+      const iconEl=document.createElement("span");
+      iconEl.className="callout-icon";
+      iconEl.textContent=icon;
+      const bodyEl=document.createElement("div");
+      bodyEl.className="callout-body";
+      // Move all children of blockquote into bodyEl
+      while(bq.firstChild) bodyEl.appendChild(bq.firstChild);
+      callout.appendChild(iconEl);
+      callout.appendChild(bodyEl);
+      bq.parentNode.replaceChild(callout,bq);
+    }
+  });
+}
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('show'));
+  $(id).classList.add('show');
+}
+function getLS(k){ try{return JSON.parse(localStorage.getItem(k)||'null')}catch(e){return null} }
+function setLS(k,v){ localStorage.setItem(k,JSON.stringify(v)); }
+function migrateModel(m){
+  const map={'llama3-70b-8192':'openai/gpt-oss-120b','llama-3.3-70b-versatile':'openai/gpt-oss-120b','llama-3.1-8b-instant':'openai/gpt-oss-20b','llama-3.2-90b-vision-preview':'qwen/qwen3.6-27b','mixtral-8x7b-32768':'openai/gpt-oss-120b','gemma2-9b-it':'openai/gpt-oss-20b','meta-llama/llama-4-scout-17b-16e-instruct':'openai/gpt-oss-120b'};
+  return map[m]||m;
+}
+function migrateAndFixSettings(){
+  const s=getLS(LS_SETTINGS)||{};
+  if(s.model&&s.model!==migrateModel(s.model)){
+    s.model=migrateModel(s.model); setLS(LS_SETTINGS,s);
+    toast("\u26a0\ufe0f Mod\u00e8le mis \u00e0 jour automatiquement (ancien mod\u00e8le obsol\u00e8te)");
+  }
+}
+function getAccounts(){ return getLS(LS_KEY) || {}; }
+function setAccounts(a){ setLS(LS_KEY,a); }
+function escapeHtml(t){ const d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+function randomStr(len){ const chars='ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789'; let r=''; for(let i=0;i<len;i++) r+=chars[Math.floor(Math.random()*chars.length)]; return r; }
+function randomDigits(len){ let r=''; for(let i=0;i<len;i++) r+=Math.floor(Math.random()*10); return r; }
+
+// ===================== STATE =====================
+let state = {
+  role:null, user:null, conversations:[], currentConvId:null,
+  isTeaching:false, teachingSubject:'general', homework:[],
+  isGenerating:false, lockTimer:null, isLocked:false, files:[], capturedImageBase64:null};
+
+// ===================== THEME =====================
+function applyTheme(t){ document.body.className=t; $('themeSelect').value=t; }
+applyTheme((getLS(LS_SETTINGS)||{}).theme||'dark');
+
+// ===================== NAVIGATION =====================
+
+$('btnRoleStudent').onclick=()=>{ state.role='student'; showStudentAuth(); };
+
+
+// ===================== STUDENT AUTH =====================
+function showStudentAuth(){ showPage('studentLoginPage'); }
+$('backStudentLogin').onclick=$('backStudentRegister').onclick=()=>showPage('rolePage');
+$('goStudentRegister').onclick=()=>showPage('studentRegisterPage');
+$('goStudentLogin').onclick=()=>showPage('studentLoginPage');
+
+$('sRegBtn').onclick=()=>{
+  const name=$('sRegName').value.trim(), cls=$('sRegClass').value.trim(), school=$('sRegSchool').value.trim(), level=$('sRegLevel').value, pin=$('sRegPin').value;
+  if(!name||!pin){ toast('Prénom et PIN obligatoires'); return; }
+  if(!/^\d{4}$/.test(pin)){ toast('Le PIN doit contenir exactement 4 chiffres'); return; }
+  const accounts=getAccounts();
+  if(!accounts.students) accounts.students={};
+  if(accounts.students[name]){ toast('Ce prénom est déjà utilisé.'); return; }
+  accounts.students[name]={name,class:cls,school,level,pin,registeredAt:now()};
+  setAccounts(accounts);
+  toast('Inscription réussie ! Bienvenue '+name);
+  showPage('studentLoginPage');
+};
+
+$('sLoginBtn').onclick=()=>{
+  const name=$('sLoginName').value.trim(), pin=$('sLoginPin').value;
+  const accounts=getAccounts();
+  if(!accounts.students||!accounts.students[name]){ toast('Élève non trouvé'); return; }
+  if(accounts.students[name].pin!==pin){ toast('Code PIN incorrect'); return; }
+  state.user={role:'student',...accounts.students[name]};
+  initApp();
+};
+
+// ===================== PROGRESS (basé sur corrections) =====================
+function loadProgress(){
+  state.progress=getLS(LS_PROGRESS)||{level:1,xp:0,totalMessages:0,totalCorrections:0,totalHomework:0,totalQuizzes:0,lastMsgDate:'',correctionsBySubject:{}};
+  renderProgress();
+}
+function saveProgress(){ setLS(LS_PROGRESS,state.progress); }
+function xpForLevel(l){ return l*100; }
+function renderProgress(){
+  const p=state.progress;
+  const needed=xpForLevel(p.level);
+  const pct=Math.min(100,Math.round((p.xp/needed)*100));
+  $('progressLevel').textContent='Niveau '+p.level;
+  $('progressXp').textContent=p.xp+' / '+needed+' XP';
+  $('progressFill').style.width=pct+'%';
+}
+function showProgressMsg(text){
+  const el=$('progressMsg'); el.textContent=text; el.style.opacity='1';
+  setTimeout(()=>{ el.style.opacity='0'; setTimeout(()=>el.textContent='',400); },2500);
+}
+function addXp(type,subject){
+  const p=state.progress;
+  const d=today();
+  if(type==='message'){
+    p.totalMessages=(p.totalMessages||0)+1;
+    p.xp+=5; showProgressMsg('+5 XP — message envoyé');
+  }else if(type==='correction'){
+    p.totalCorrections=(p.totalCorrections||0)+1;
+    p.xp+=20; showProgressMsg('+20 XP — épreuve corrigée !');
+    if(subject){
+      if(!p.correctionsBySubject) p.correctionsBySubject={};
+      p.correctionsBySubject[subject]=(p.correctionsBySubject[subject]||0)+1;
+    }
+  }else if(type==='homework'){
+    p.totalHomework=(p.totalHomework||0)+1;
+    p.xp+=25; showProgressMsg('+25 XP — devoir terminé !');
+  }else if(type==='quiz'){
+    p.totalQuizzes=(p.totalQuizzes||0)+1;
+    p.xp+=15; showProgressMsg('+15 XP — quiz complété !');
+  }
+  const needed=xpForLevel(p.level);
+  while(p.xp>=needed){ p.xp-=needed; p.level++; showProgressMsg('🎉 Niveau '+p.level+' atteint !'); }
+  saveProgress(); renderProgress();
+}
+
+// ===================== ERROR LEARNING =====================
+function loadErrors(){
+  const all=getLS(LS_ERRORS)||{};
+  state.errors=all[state.user.name]||[];
+}
+function saveErrors(){
+  const all=getLS(LS_ERRORS)||{}; all[state.user.name]=state.errors; setLS(LS_ERRORS,all);
+}
+function recordError(subject,question,errorDetail,correction){
+  state.errors.unshift({
+    subject:subject||'general',
+    question:question.slice(0,200),
+    error:errorDetail.slice(0,300),
+    correction:correction.slice(0,300),
+    date:now(),count:1
+  });
+  // Keep max 50 errors
+  if(state.errors.length>50) state.errors=state.errors.slice(0,50);
+  saveErrors();
+}
+function getErrorsContext(){
+  if(!state.errors||state.errors.length===0) return '';
+  const recent=state.errors.slice(0,10);
+  let ctx='\n\n--- ERREURS PASSÉES DE L\'ÉLÈVE (adapte ton explication pour éviter ces erreurs) ---\n';
+  recent.forEach((e,i)=>{
+    ctx+='Erreur '+parseInt(i+1)+' ['+e.subject+'] : '+e.error+' → Correction : '+e.correction+'\n';
+  });
+  ctx+='--- FIN ERREURS PASSÉES ---';
+  return ctx;
+}
+function detectErrorsInResponse(aiResponse,userQuestion){
+  const lower=aiResponse.toLowerCase();
+  const subject=state.teachingSubject||'general';
+  // Detect correction patterns
+  const errorPatterns=[
+    /erreur\s*[::]\s*(.{5,100})/gi,
+    /❌[^❌]{5,150}/g,
+    /incorrect[^.]{5,100}\./gi,
+    /faux[^.]{5,100}\./gi
+  ];
+  for(const pat of errorPatterns){
+    const matches=aiResponse.match(pat);
+    if(matches){
+      for(const m of matches.slice(0,3)){
+        const errorText=m.replace(/^[^a-zA-ZÀ-ÿ]*/,  '').trim().slice(0,150);
+        // Find correction nearby
+        const corrMatch=aiResponse.match(/✅[^✅]{5,150}|correction\s*[:\.]\s*(.{5,150})/gi);
+        const corrText=corrMatch?corrMatch[0].slice(0,150):'Corrigé dans la réponse';
+        recordError(subject,userQuestion,errorText,corrText);
+      }
+      break;
+    }
+  }
+}
+
+// ===================== STATS =====================
+function loadStats(){
+  state.stats=getLS(LS_STATS)||{messagesBySubject:{},correctionsBySubject:{},dailyActivity:{}};
+}
+function saveStats(){ setLS(LS_STATS,state.stats); }
+function recordStatMessage(subject){
+  if(!state.stats.messagesBySubject) state.stats.messagesBySubject={};
+  state.stats.messagesBySubject[subject]=(state.stats.messagesBySubject[subject]||0)+1;
+  const d=today();
+  if(!state.stats.dailyActivity) state.stats.dailyActivity={};
+  state.stats.dailyActivity[d]=(state.stats.dailyActivity[d]||0)+1;
+  saveStats();
+}
+function renderStats(){
+  const p=state.progress||{};
+  const e=state.errors||[];
+  const st=state.stats||{};
+  const corrBySubj=p.correctionsBySubject||{};
+  const msgBySubj=st.messagesBySubject||{};
+  
+  const subjects=['maths','physique','svt','histoire','francais','anglais','techno','general'];
+  const subjNames={maths:'Maths',physique:'Physique',svt:'SVT',histoire:'Histoire',francais:'Français',anglais:'Anglais',techno:'Techno',general:'Général'};
+  
+  let html='<div class="stats-grid">';
+  html+='<div class="stat-card"><div class="stat-num">'+(p.totalMessages||0)+'</div><div class="stat-label">Messages</div></div>';
+  html+='<div class="stat-card"><div class="stat-num">'+(p.totalCorrections||0)+'</div><div class="stat-label">Épreuves corrigées</div></div>';
+  html+='<div class="stat-card"><div class="stat-num">'+(p.totalHomework||0)+'</div><div class="stat-label">Devoirs faits</div></div>';
+  html+='<div class="stat-card"><div class="stat-num">'+(p.totalQuizzes||0)+'</div><div class="stat-label">Quiz complétés</div></div>';
+  html+='<div class="stat-card"><div class="stat-num">'+p.level+'</div><div class="stat-label">Niveau</div></div>';
+  html+='<div class="stat-card"><div class="stat-num">'+p.xp+'</div><div class="stat-label">XP actuel</div></div>';
+  html+='<div class="stat-card"><div class="stat-num">'+e.length+'</div><div class="stat-label">Erreurs identifiées</div></div>';
+  html+='<div class="stat-card"><div class="stat-num" style="color:var(--accent)">'+xpForLevel(p.level)+'</div><div class="stat-label">XP prochain niveau</div></div>';
+  html+='</div>';
+  
+  // Detailed table
+  html+='<h3 style="font-size:.95rem;font-weight:700;color:var(--primary-light);margin:16px 0 8px">📊 Détail par matière</h3>';
+  html+='<table class="stats-table"><thead><tr><th>Matière</th><th>Messages</th><th>Corrections</th><th>Erreurs</th></tr></thead><tbody>';
+  subjects.forEach(s=>{
+    html+='<tr><td>'+subjNames[s]+'</td><td class="num">'+(msgBySubj[s]||0)+'</td><td class="num">'+(corrBySubj[s]||0)+'</td><td class="num" style="color:var(--danger)">'+e.filter(er=>er.subject===s).length+'</td></tr>';
+  });
+  html+='</tbody></table>';
+  
+  // Error chart by subject
+  const maxErr=Math.max(1,...subjects.map(s=>e.filter(er=>er.subject===s).length));
+  html+='<div class="error-chart"><h4>📈 Erreurs par matière</h4>';
+  subjects.forEach(s=>{
+    const count=e.filter(er=>er.subject===s).length;
+    const pct=Math.round((count/maxErr)*100);
+    if(count>0){
+      html+='<div class="error-bar"><span class="error-bar-label">'+subjNames[s]+'</span><div class="error-bar-track"><div class="error-bar-fill '+s+'" style="width:'+pct+'%"></div></div><span class="error-bar-count">'+count+'</span></div>';
+    }
+  });
+  if(e.length===0) html+='<p style="text-align:center;color:var(--text-secondary);padding:16px">Aucune erreur enregistrée pour le moment.</p>';
+  html+='</div>';
+  
+  // Recent errors
+  if(e.length>0){
+    html+='<h3 style="font-size:.95rem;font-weight:700;color:var(--danger);margin:16px 0 8px">❌ Erreurs récentes</h3>';
+    html+='<table class="stats-table"><thead><tr><th>Date</th><th>Matière</th><th>Erreur</th><th>Correction</th></tr></thead><tbody>';
+    e.slice(0,10).forEach(er=>{
+      html+='<tr><td>'+er.date+'</td><td>'+subjNames[er.subject]+'</td><td style="color:var(--danger);font-size:.8rem">'+escapeHtml(er.error.slice(0,60))+'</td><td style="color:var(--accent);font-size:.8rem">'+escapeHtml(er.correction.slice(0,60))+'</td></tr>';
+    });
+    html+='</tbody></table>';
+  }
+  
+  $('statsModalBody').innerHTML=html;
+}
+
+// ===================== APP INIT =====================
+function initApp(){
+  migrateAndFixSettings();
+  const s=getLS(LS_SETTINGS)||{};
+  applyTheme(s.theme||'dark');
+  $('userName').textContent=state.user.name;
+  $('welcomeName').textContent=state.user.name;
+  $('userMeta').textContent=(state.user.class||'')+' / '+(state.user.level||'');
+  $('userAvatar').textContent=state.user.name.slice(0,2).toUpperCase();
+  loadConversations(); loadHomework(); loadProgress(); loadErrors(); loadStats();
+  populateVoiceSelect();
+  $('modelSelect').value=migrateModel(s.model)||'openai/gpt-oss-120b';
+  $('tempSlider').value=s.temp??0.7; $('tempLabel').textContent=s.temp??0.7;
+  $('levelSelect').value=s.level||state.user.level||'general';
+  $('lockSelect').value=s.lockMin||5;
+  showPage('appPage');
+  startLockTimer();
+
+  checkApiStatus();
+}
+
+
+// ===================== API STATUS CHECK =====================
+async function checkApiStatus(){
+  $("statusDot").className="status-dot checking";
+  $("statusText").textContent="Vérification...";
+  try{
+    const resp=await fetch(GROQ_MODELS,{
+      method:"GET",
+      headers:{"Authorization":"Bearer "+GROQ_KEY},
+      signal:AbortSignal.timeout(8000)
+    });
+    if(resp.ok){
+      $("statusDot").className="status-dot online";
+      $("statusText").textContent="En ligne";
+    }else{
+      $("statusDot").className="status-dot offline";
+      $("statusText").textContent="Erreur API ("+resp.status+")";
+    }
+  }catch(e){
+    $("statusDot").className="status-dot offline";
+    $("statusText").textContent="Hors ligne";
+  }
+}
+
+
+setInterval(checkApiStatus,60000);
+
+// ===================== CONVERSATIONS =====================
+function loadConversations(){
+  const all=getLS(LS_CONV)||{};
+  state.conversations=all[state.user.name]||[];
+  if(state.conversations.length===0) newConversation();
+  else { state.currentConvId=state.conversations[0].id; renderConversations(); renderMessages(); }
+}
+function saveConversations(){
+  const all=getLS(LS_CONV)||{}; all[state.user.name]=state.conversations; setLS(LS_CONV,all);
+}
+function newConversation(){
+  const id=uuid(); state.conversations.unshift({id,title:'Nouvelle conversation',messages:[],date:now()});
+  state.currentConvId=id; saveConversations(); renderConversations(); renderMessages();
+  $('welcomeBox').style.display='block'; $('chatArea').scrollTop=0;
+}
+function renderConversations(){
+  const el=$('convItems'); el.innerHTML='';
+  state.conversations.forEach(c=>{
+    const d=document.createElement('div'); d.className='conv-item'+(c.id===state.currentConvId?' active':'');
+    d.innerHTML='<span class="conv-icon">💬</span><span class="conv-title">'+escapeHtml(c.title)+'</span><button class="conv-del" data-id="'+c.id+'">×</button>';
+    d.onclick=e=>{ if(e.target.classList.contains('conv-del')) return; selectConv(c.id); };
+    el.appendChild(d);
+  });
+  el.querySelectorAll('.conv-del').forEach(b=>b.onclick=e=>{ e.stopPropagation(); deleteConv(b.dataset.id); });
+}
+function selectConv(id){ state.currentConvId=id; renderConversations(); renderMessages(); }
+function deleteConv(id){
+  state.conversations=state.conversations.filter(c=>c.id!==id);
+  if(state.conversations.length===0) newConversation();
+  else { if(state.currentConvId===id) state.currentConvId=state.conversations[0].id; saveConversations(); renderConversations(); renderMessages(); }
+}
+function getCurrentConv(){ return state.conversations.find(c=>c.id===state.currentConvId); }
+function renderMessages(){
+  const ca=$('chatArea');
+  while(ca.children.length>1) ca.removeChild(ca.lastChild);
+  const c=getCurrentConv(); if(!c) return;
+  $('chatTitle').textContent=c.title;
+  if(c.messages.length>0) $('welcomeBox').style.display='none';
+  else $('welcomeBox').style.display='block';
+  c.messages.forEach(m=>appendMessageEl(m));
+  scrollBottom();
+}
+function appendMessageEl(m){
+  const ca=$('chatArea'); const div=document.createElement('div');
+  div.className='msg-wrapper '+(m.role==='user'?'user':'ai');
+  let body='';
+  if(m.role==='user') body=escapeHtml(m.content);
+  else body=typeof marked!=='undefined'?marked.parse(m.content):escapeHtml(m.content);
+  div.innerHTML='<div class="msg-avatar '+(m.role==='user'?'user':'ai')+'">'+(m.role==='user'?'👤':'🤖')+'</div><div class="msg-body">'+body+'<div class="msg-time">'+m.time+'</div>'+(m.role==='ai'?'<div class="msg-actions"><button class="msg-action-btn" onclick="copyMsg(this)">📋 Copier</button><button class="msg-action-btn" onclick="speakMsg(this)">🔊 Écouter</button></div>':'')+'</div>';
+  ca.appendChild(div);
+  // Enhance blockquotes into styled callouts
+  enhanceBlockquotes(div);
+  if(typeof hljs!=='undefined') div.querySelectorAll('pre code').forEach(b=>hljs.highlightElement(b));
+  // Add copy buttons to code blocks + Apply to WebDev button
+  div.querySelectorAll('pre').forEach(pre=>{
+    const wrapper=document.createElement('div'); wrapper.className='code-block-wrapper';
+    pre.parentNode.insertBefore(wrapper,pre); wrapper.appendChild(pre);
+    const btn=document.createElement('button'); btn.className='code-copy-btn'; btn.textContent='📋 Copier le code';
+    btn.onclick=()=>{ const code=pre.querySelector('code')?pre.querySelector('code').textContent:pre.textContent; navigator.clipboard.writeText(code).then(()=>{btn.textContent='✅ Copié !';btn.classList.add('copied');setTimeout(()=>{btn.textContent='📋 Copier le code';btn.classList.remove('copied');},2000);}); };
+    wrapper.appendChild(btn);
+    // Detect language
+    const codeEl=pre.querySelector('code');
+    const langCls=codeEl?Array.from(codeEl.classList).find(c=>c.startsWith('language-')):'';
+    let lang='html';
+    if(langCls){const m=langCls.match(/language-(\w+)/);if(m)lang=m[1];}
+    const codeText=codeEl?codeEl.textContent:pre.textContent;
+    if(lang==='html'||codeText.includes('<!DOCTYPE')||codeText.includes('<html')||codeText.includes('<body'))lang='html';
+    else if(lang==='css'||(codeText.includes('{')&&codeText.includes(':')&&!codeText.includes('<')))lang='css';
+    else if(lang==='javascript'||lang==='js'||codeText.includes('function ')||codeText.includes('const ')||codeText.includes('document.'))lang='js';
+    // Apply to WebDev button
+    if(document.getElementById('webdevPage').classList.contains('show')||state._webdevWaitingApply){
+      const applyBtn=document.createElement('button');
+      applyBtn.className='msg-apply-webdev-btn';
+      applyBtn.innerHTML='✨ Appliquer au WebDev';
+      applyBtn.onclick=()=>{applyAiCodeToWebdev(codeText,lang);};
+      wrapper.appendChild(applyBtn);
+    }
+    // Apply to Python Studio button
+    if(document.getElementById('pydevPage')&&document.getElementById('pydevPage').classList.contains('show')||state._pydevWaitingApply){
+      if(lang==='python'||lang==='py'||codeText.includes('import ')||codeText.includes('def ')||codeText.includes('print(')){
+        const pyApplyBtn=document.createElement('button');
+        pyApplyBtn.className='msg-apply-pydev-btn';
+        pyApplyBtn.innerHTML='🐍 Appliquer au Python';
+        pyApplyBtn.onclick=()=>{applyAiCodeToPydev(codeText);};
+        wrapper.appendChild(pyApplyBtn);
+      }
+    }
+  });
+  scrollBottom();
+}
+function scrollBottom(){ setTimeout(()=>$('chatArea').scrollTop=$('chatArea').scrollHeight,60); }
+window.copyMsg=function(btn){
+  const body=btn.closest('.msg-body');
+  let txt='';
+  body.childNodes.forEach(n=>{ if(n.nodeType===3) txt+=n.textContent; else if(n.tagName==='P'||n.tagName==='DIV'||n.tagName==='H3'||n.tagName==='H4') txt+=n.textContent+'\n'; });
+  txt=txt.trim();
+  navigator.clipboard.writeText(txt).then(()=>toast('Copié !'));
+};
+window.speakMsg=function(btn){
+  const txt=btn.closest('.msg-body').innerText.trim();
+  if('speechSynthesis' in window){
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(txt); u.lang='fr-FR'; u.rate=0.95;
+    const v=$('voiceSelect').value;
+    if(v) u.voice=speechSynthesis.getVoices().find(vo=>vo.name===v);
+    speechSynthesis.speak(u);
+  }
+};
+
+function populateVoiceSelect(){
+  const sel=$('voiceSelect'); sel.innerHTML='<option value="">Défaut système</option>';
+  if('speechSynthesis' in window){
+    const load=()=>speechSynthesis.getVoices().forEach(v=>{
+      if(v.lang.startsWith('fr')){ const o=document.createElement('option'); o.value=v.name; o.textContent=v.name; sel.appendChild(o); }
+    });
+    load(); speechSynthesis.onvoiceschanged=load;
+  }
+}
+
+
+// ===================== VISION FUNCTIONS =====================
+function closeCamera(){ stopCamera(); $("cameraModal").classList.remove("show"); }
+
+async function sendImageToVision(base64DataUrl, userPrompt){
+
+  if(state.isGenerating){ toast("\u23f3 Attends la fin de la g\u00e9n\u00e9ration en cours"); return; }
+  const conv=getCurrentConv();
+  const displayPrompt=userPrompt.length>60?userPrompt.slice(0,60)+"...":userPrompt;
+  if(conv.messages.length===0) conv.title="\U0001f4f7 "+displayPrompt;
+  conv.messages.push({role:"user",content:"\U0001f4f7 [Image] "+userPrompt,time:now()});
+  appendMessageEl({role:"user",content:"\U0001f4f7 [Image] "+userPrompt,time:now()});
+  saveConversations(); renderConversations();
+  recordStatMessage(state.teachingSubject||"general"); addXp("message");
+  state.isGenerating=true;
+  const typing=document.createElement("div"); typing.id="typing"; typing.className="typing";
+  typing.innerHTML="<span></span><span></span><span></span>";
+  $("chatArea").appendChild(typing); scrollBottom();
+  const basePrompt=state.isTeaching?buildTeachPrompt(state.teachingSubject,$("levelSelect").value):SYSTEM_PROMPT;
+  const errorCtx=getErrorsContext();
+  const fullSystemPrompt=basePrompt+errorCtx+"\nTu as aussi la capacit\u00e9 d\u2019analyser des images. Quand on t\u2019envoie une image, d\u00e9cris-la en d\u00e9tail, identifie les \u00e9l\u00e9ments visuels, les textes, et le contexte.";
+  const s=getLS(LS_SETTINGS)||{};
+  const temp=parseFloat(s.temp??0.7);
+  const visionMsgs=[{role:"system",content:fullSystemPrompt}];
+  const prevMsgs=conv.messages.slice(0,-1);
+  prevMsgs.forEach(m=>visionMsgs.push({role:m.role,content:m.content}));
+  visionMsgs.push({role:"user",content:[{type:"image_url",image_url:{url:base64DataUrl}},{type:"text",text:userPrompt}]});
+  let lastError=null;
+  for(let attempt=0;attempt<3;attempt++){
+    try{
+      if(attempt>0){ toast("\U0001f504 Nouvelle tentative ("+parseInt(attempt+1)+"/3)..."); await new Promise(r=>setTimeout(r,1000*Math.pow(2,attempt))); }
+      const resp=await fetch(GROQ_URL,{
+        method:"POST",
+        headers:{"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
+        body:JSON.stringify({model:"qwen/qwen3.6-27b",messages:visionMsgs,temperature:temp,max_tokens:4096}),
+        signal:AbortSignal.timeout(30000)
+      });
+      const typingEl=$("typing"); if(typingEl) typingEl.remove();
+      if(!resp.ok){
+        const errData=await resp.json().catch(()=>null);
+        const errMsg=errData?.error?.message||("Erreur API "+resp.status);
+        if(resp.status===429) lastError=new Error("\u23f3 Trop de requ\u00eates. Attends quelques secondes.");
+        else if(resp.status===401) lastError=new Error("\U0001f511 Cl\u00e9 API Groq invalide.");
+        else lastError=new Error("Erreur API ("+resp.status+"): "+errMsg);
+        continue;
+      }
+      const data=await resp.json();
+      const aiMsg=data.choices?.[0]?.message?.content||"(Aucune r\u00e9ponse)";
+      conv.messages.push({role:"assistant",content:aiMsg,time:now()});
+      appendMessageEl({role:"assistant",content:aiMsg,time:now()});
+      saveConversations(); renderConversations();
+      lastError=null; break;
+    }catch(err){
+      const typingEl=$("typing"); if(typingEl) typingEl.remove();
+      if(err.name==="TimeoutError"||err.name==="AbortError") lastError=new Error("\u23f1\ufe0f D\u00e9lai d\u2019attente d\u00e9pass\u00e9.");
+      else if(err.message&&err.message.includes("Failed to fetch")) lastError=new Error("\U0001f310 Erreur r\u00e9seau.");
+      else lastError=err;
+    }
+  }
+  if(lastError){
+    const typ=$("typing"); if(typ) typ.remove();
+    appendMessageEl({role:"assistant",content:"\u274c **Erreur de vision**\n\n"+lastError.message+"\n\n\U0001f4a1 V\u00e9rifie ta cl\u00e9 API Groq.",time:now()});
+  }
+  state.isGenerating=false;
+}
+
+async function sendFileImageToVision(base64DataUrl, fileName, userText){
+
+  if(state.isGenerating){ toast("\u23f3 Attends la fin de la g\u00e9n\u00e9ration en cours"); return; }
+  const conv=getCurrentConv();
+  const prompt=userText||"Analyse cette image en d\u00e9tail.";
+  if(conv.messages.length===0) conv.title="\U0001f4f7 "+prompt.slice(0,36);
+  conv.messages.push({role:"user",content:"\U0001f4f7 ["+fileName+"] "+prompt,time:now()});
+  appendMessageEl({role:"user",content:"\U0001f4f7 ["+fileName+"] "+prompt,time:now()});
+  saveConversations(); renderConversations();
+  recordStatMessage(state.teachingSubject||"general"); addXp("message");
+  state.isGenerating=true;
+  const typing=document.createElement("div"); typing.id="typing"; typing.className="typing";
+  typing.innerHTML="<span></span><span></span><span></span>";
+  $("chatArea").appendChild(typing); scrollBottom();
+  const basePrompt=state.isTeaching?buildTeachPrompt(state.teachingSubject,$("levelSelect").value):SYSTEM_PROMPT;
+  const errorCtx=getErrorsContext();
+  const fullSystemPrompt=basePrompt+errorCtx+"\nTu as aussi la capacit\u00e9 d\u2019analyser des images. Quand on t\u2019envoie une image, d\u00e9cris-la en d\u00e9tail, identifie les \u00e9l\u00e9ments visuels, les textes, et le contexte.";
+  const s=getLS(LS_SETTINGS)||{};
+  const temp=parseFloat(s.temp??0.7);
+  const visionMsgs=[{role:"system",content:fullSystemPrompt}];
+  const prevMsgs=conv.messages.slice(0,-1);
+  prevMsgs.forEach(m=>visionMsgs.push({role:m.role,content:m.content}));
+  visionMsgs.push({role:"user",content:[{type:"image_url",image_url:{url:base64DataUrl}},{type:"text",text:prompt}]});
+  let lastError=null;
+  for(let attempt=0;attempt<3;attempt++){
+    try{
+      if(attempt>0){ toast("\U0001f504 Nouvelle tentative ("+parseInt(attempt+1)+"/3)..."); await new Promise(r=>setTimeout(r,1000*Math.pow(2,attempt))); }
+      const resp=await fetch(GROQ_URL,{
+        method:"POST",
+        headers:{"Content-Type":"application/json","Authorization":"Bearer "+GROQ_KEY},
+        body:JSON.stringify({model:"qwen/qwen3.6-27b",messages:visionMsgs,temperature:temp,max_tokens:4096}),
+        signal:AbortSignal.timeout(30000)
+      });
+      const typingEl=$("typing"); if(typingEl) typingEl.remove();
+      if(!resp.ok){
+        const errData=await resp.json().catch(()=>null);
+        const errMsg=errData?.error?.message||("Erreur API "+resp.status);
+        if(resp.status===429) lastError=new Error("\u23f3 Trop de requ\u00eates. Attends quelques secondes.");
+        else if(resp.status===401) lastError=new Error("\U0001f511 Cl\u00e9 API Groq invalide.");
+        else lastError=new Error("Erreur API ("+resp.status+"): "+errMsg);
+        continue;
+      }
+      const data=await resp.json();
+      const aiMsg=data.choices?.[0]?.message?.content||"(Aucune r\u00e9ponse)";
+      conv.messages.push({role:"assistant",content:aiMsg,time:now()});
+      appendMessageEl({role:"assistant",content:aiMsg,time:now()});
+      saveConversations(); renderConversations();
+      lastError=null; break;
+    }catch(err){
+      const typingEl=$("typing"); if(typingEl) typingEl.remove();
+      if(err.name==="TimeoutError"||err.name==="AbortError") lastError=new Error("\u23f1\ufe0f D\u00e9lai d\u2019attente d\u00e9pass\u00e9.");
+      else lastError=err;
+    }
+  }
+  if(lastError){
+    const typ=$("typing"); if(typ) typ.remove();
+    appendMessageEl({role:"assistant",content:"\u274c **Erreur de vision**\n\n"+lastError.message,time:now()});
+  }
+  state.isGenerating=false;
+}
+
+// ===================== SEND MESSAGE (with retry & file analysis) =====================
+$('sendBtn').onclick=sendMessage;
+$('inputField').addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMessage(); } });
+document.querySelectorAll('.suggestion-card').forEach(c=>c.onclick=()=>{ $('inputField').value=c.dataset.q; sendMessage(); });
+
+async function sendMessage(){
+  const text=$('inputField').value.trim();
+  if(!text&&!state.files.length) return;
+  if(state.isGenerating) return;
+
+  
+  const conv=getCurrentConv();
+  if(conv.messages.length===0&&text) conv.title=text.slice(0,36)+(text.length>36?'...':'');
+  
+  // Build content with file analysis
+  let content=text;
+  let fileAnalysis='';
+  let visionImage=null;
+  if(state.files.length>0){
+    for(const f of state.files){
+      if(f.base64Data){
+        visionImage=f;
+        content+="\n[Image envoyée pour analyse: "+f.name+"]";
+      } else {
+        content+='\n[Fichier joint: '+f.name+' ('+formatSize(f.size)+')]';
+        if(f.content){
+          fileAnalysis+='\n\n--- Contenu du fichier "'+f.name+'" ---\n'+f.content.slice(0,3000)+'\n--- Fin du fichier ---';
+        } else {
+          fileAnalysis+='\n(Fichier binaire: '+f.name+' — type: '+f.type+')';
+        }
+      }
+    }
+    state.files=[]; $('fileChips').innerHTML='';
+  }
+  if(fileAnalysis) content+=fileAnalysis;
+  
+  conv.messages.push({role:'user',content,time:now()});
+  appendMessageEl({role:'user',content,time:now()});
+  $('inputField').value=''; $('inputField').style.height='auto';
+  saveConversations(); renderConversations();
+  recordStatMessage(state.teachingSubject||'general');
+  addXp('message');
+  
+  // Vision routing: if image with base64, send to vision model
+  if(visionImage){
+    state.isGenerating=true; $('sendBtn').disabled=true;
+    sendImageToVision(visionImage.base64Data, content.replace(/\[Image envoy[^\]]*\]/,"").trim()||"D\u00e9cris cette image en d\u00e9tail");
+    return;
+  }
+  
+  state.isGenerating=true; $('sendBtn').disabled=true;
+  const typing=document.createElement('div'); typing.id='typing'; typing.className='typing';
+  typing.innerHTML='<span></span><span></span><span></span>';
+  $('chatArea').appendChild(typing); scrollBottom();
+  
+  // Build system prompt with error context
+  const basePrompt=state.isTeaching?buildTeachPrompt(state.teachingSubject,$('levelSelect').value):SYSTEM_PROMPT;
+  const errorCtx=getErrorsContext();
+  const fullSystemPrompt=basePrompt+errorCtx;
+  
+  const msgs=[{role:'system',content:fullSystemPrompt},...conv.messages.map(m=>({role:m.role,content:m.content}))];
+  const s=getLS(LS_SETTINGS)||{};
+  const model=migrateModel(s.model)||'openai/gpt-oss-120b';
+  const temp=parseFloat(s.temp??0.7);
+  
+  // Retry logic (3 attempts with backoff)
+  let lastError=null;
+  for(let attempt=0;attempt<3;attempt++){
+    try{
+      if(attempt>0){
+        toast('🔄 Nouvelle tentative ('+parseInt(attempt+1)+'/3)...');
+        await new Promise(r=>setTimeout(r,1000*Math.pow(2,attempt)));
+      }
+      const resp=await fetch(GROQ_URL,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},
+        body:JSON.stringify({model,messages:msgs,temperature:temp,max_tokens:4096}),
+        signal:AbortSignal.timeout(30000)
+      });
+      typing.remove();
+      if(!resp.ok){
+        const errData=await resp.json().catch(()=>null);
+        const errMsg=errData?.error?.message||('Erreur API '+resp.status);
+        if(resp.status===429) lastError=new Error('⏳ Trop de requêtes. Attends quelques secondes puis réessaie.');
+        else if(resp.status===401) lastError=new Error('🔑 Clé API Groq invalide. Vérifie ta clé.');
+        else if(resp.status===503) lastError=new Error('🔧 Service Groq temporairement indisponible. Réessaie dans un instant.');
+        else lastError=new Error('Erreur API ('+resp.status+'): '+errMsg);
+        continue;
+      }
+      const data=await resp.json();
+      const aiMsg=data.choices?.[0]?.message?.content||'(Aucune réponse)';
+      conv.messages.push({role:'assistant',content:aiMsg,time:now()});
+      appendMessageEl({role:'assistant',content:aiMsg,time:now()});
+      saveConversations(); renderConversations();
+      $('statusDot').className='status-dot online'; $('statusText').textContent='En ligne';
+      
+      // Detect corrections & errors in AI response
+      const isCorrection=text.toLowerCase().includes('corrige')||text.toLowerCase().includes('correction')||text.toLowerCase().includes('vérifie')||state.isTeaching;
+      if(isCorrection){
+        addXp('correction',state.teachingSubject||'general');
+        detectErrorsInResponse(aiMsg,text);
+      }
+      const isQuiz=aiMsg.toLowerCase().includes('quiz')||text.toLowerCase().includes('quiz');
+      if(isQuiz) addXp('quiz');
+      
+      const hw=detectHomework(aiMsg); if(hw) addHomework(hw.title,hw.content);
+      lastError=null;
+      break;
+    }catch(err){
+      typing.remove();
+      if(err.name==='TimeoutError'||err.name==='AbortError') lastError=new Error('⏱️ Délai d\'attente dépassé. Vérifie ta connexion internet.');
+      else if(err.message&&err.message.includes('Failed to fetch')) lastError=new Error('🌐 Erreur réseau. Vérifie ta connexion internet et que le site groq.com est accessible.');
+      else lastError=err;
+    }
+  }
+  
+  if(lastError){
+    // Remove typing indicator if still present
+    const typ=$('typing'); if(typ) typ.remove();
+    appendMessageEl({role:'assistant',content:'❌ **Erreur de connexion**\n\n'+lastError.message+'\n\n💡 **Solutions possibles :**\n- Vérifie ta connexion internet\n- Vérifie ta clé API Groq\n- Réessaie dans quelques secondes\n- Change de modèle IA dans les paramètres',time:now()});
+    $('statusDot').className='status-dot offline'; $('statusText').textContent='Hors ligne';
+  }
+  
+  state.isGenerating=false; $('sendBtn').disabled=false;
+}
+
+function formatSize(bytes){
+  if(bytes<1024) return bytes+' o';
+  if(bytes<1024*1024) return (bytes/1024).toFixed(1)+' Ko';
+  return (bytes/1024/1024).toFixed(1)+' Mo';
+}
+
+function buildTeachPrompt(subject,level){
+  const base=SYSTEM_PROMPT;
+  const levelText=level==='college'?'un élève du collège':level==='lycee'?'un élève du lycée':'un étudiant';
+  const subjMap={maths:'en mathématiques',physique:'en physique-chimie',svt:'en SVT',histoire:'en histoire-géographie',francais:'en français',anglais:'en anglais',techno:'en technologie',general:'dans toutes les matières'};
+  return base+'\n\nMODE ENSEIGNEMENT ACTIF : Tu expliques de manière pédagogique pour '+levelText+' '+(subjMap[subject]||subjMap.general)+'. Donne des leçons structurées, des exercices avec correction détaillée, et identifie clairement les erreurs de l\'élève.';
+}
+
+function detectHomework(text){
+  const t=text.toLowerCase();
+  if((t.includes('devoir')||t.includes('exercice')||t.includes('travail à faire'))&&text.length>200){
+    const lines=text.split('\n'); let title='Devoir - '+now();
+    for(const line of lines){ if(line.trim().length>5&&line.trim().length<80){ title=line.trim().slice(0,70); break; }}
+    return {title,content:text};
+  }
+  return null;
+}
+
+// ===================== HOMEWORK =====================
+function loadHomework(){
+  const all=getLS(LS_HW)||{}; state.homework=all[state.user.name]||[]; renderHomework();
+}
+function saveHomework(){
+  const all=getLS(LS_HW)||{}; all[state.user.name]=state.homework; setLS(LS_HW,all);
+}
+function addHomework(title,content){
+  state.homework.unshift({id:uuid(),title:title.slice(0,70),content,date:now(),done:false});
+  saveHomework(); renderHomework(); toast('📝 Devoir sauvegardé !');
+}
+function renderHomework(){
+  const el=$('hwItems'); el.innerHTML='';
+  if(state.homework.length===0){ $('hwEmpty').style.display='block'; return; }
+  $('hwEmpty').style.display='none';
+  state.homework.forEach(hw=>{
+    const d=document.createElement('div'); d.className='homework-card';
+    d.innerHTML='<div class="hw-header"><span class="hw-title">'+escapeHtml(hw.title)+'</span><span class="hw-status '+(hw.done?'done':'todo')+'">'+(hw.done?'Fait':'À faire')+'</span></div><div class="hw-meta"><span>'+hw.date+'</span></div>';
+    d.onclick=()=>openHw(hw.id);
+    el.appendChild(d);
+  });
+}
+$('clearAllHw').onclick=()=>{ if(!confirm('Supprimer tous les devoirs ?')) return; state.homework=[]; saveHomework(); renderHomework(); };
+function openHw(id){
+  const hw=state.homework.find(h=>h.id===id); if(!hw) return;
+  $('hwModalTitle').textContent=hw.title;
+  $('hwModalBody').innerHTML=typeof marked!=='undefined'?marked.parse(hw.content):escapeHtml(hw.content);
+  enhanceBlockquotes($('hwModalBody'));
+  $('hwModal').classList.add('show');
+  $('hwModalDone').onclick=()=>{ const wasDone=hw.done; hw.done=!hw.done; saveHomework(); renderHomework(); $('hwModal').classList.remove('show'); if(!wasDone&&hw.done) addXp('homework'); };
+  $('hwModalDo').onclick=()=>{ $('inputField').value='Voici ma réponse au devoir : "'+hw.title+'"\n\n'; $('hwModal').classList.remove('show'); $('inputField').focus(); };
+}
+$('hwModalClose').onclick=()=>$('hwModal').classList.remove('show');
+
+// ===================== TEACHING =====================
+$('tabChat').onclick=()=>{
+  $('tabChat').classList.add('active'); $('tabTeach').classList.remove('active'); $('tabStats').classList.remove('active');
+  $('convList').classList.add('show'); $('homeworkList').classList.remove('show');
+  state.isTeaching=false; $('teachPanel').classList.remove('show');
+};
+$('tabTeach').onclick=()=>{
+  $('tabTeach').classList.add('active'); $('tabChat').classList.remove('active'); $('tabStats').classList.remove('active');
+  $('homeworkList').classList.add('show'); $('convList').classList.remove('show');
+  state.isTeaching=true; $('teachPanel').classList.add('show');
+};
+$('tabStats').onclick=()=>{ renderStats(); $('statsModal').classList.add('show'); };
+$('statsBtn').onclick=()=>{ renderStats(); $('statsModal').classList.add('show'); };
+$('statsModalClose').onclick=()=>$('statsModal').classList.remove('show');
+
+document.querySelectorAll('.teach-chip').forEach(c=>c.onclick=()=>{ document.querySelectorAll('.teach-chip').forEach(x=>x.classList.remove('active')); c.classList.add('active'); state.teachingSubject=c.dataset.subject; });
+$('btnGenerateLesson').onclick=()=>{ $('inputField').value='Génère une leçon complète sur [sujet] pour mon niveau scolaire avec des sections claires et des exemples détaillés.'; $('inputField').focus(); };
+$('btnGenerateHomework').onclick=()=>{ $('inputField').value='Génère un devoir/exercice sur [sujet] adapté à mon niveau avec correction détaillée. Le titre doit commencer par "Devoir".'; $('inputField').focus(); };
+$('btnGenerateQuiz').onclick=()=>{ $('inputField').value='Génère un quiz à choix multiples sur [sujet] pour mon niveau avec les réponses détaillées.'; $('inputField').focus(); };
+$('btnGenerateCorrection').onclick=()=>{ $('inputField').value='Corrige cet exercice : [colle ton exercice ici]. Identifie chaque erreur avec ❌ et montre la correction avec ✅. Explique en détail.'; $('inputField').focus(); };
+
+// ===================== SETTINGS =====================
+$('settingsBtn').onclick=()=>$('settingsModal').classList.add('show');
+$('settingsModalClose').onclick=()=>$('settingsModal').classList.remove('show');
+$('tempSlider').oninput=e=>$('tempLabel').textContent=e.target.value;
+$('saveSettings').onclick=()=>{
+  const s=getLS(LS_SETTINGS)||{};
+  s.theme=$('themeSelect').value; s.level=$('levelSelect').value; s.model=$('modelSelect').value;
+  s.temp=$('tempSlider').value; s.lockMin=$('lockSelect').value; s.voice=$('voiceSelect').value;
+  setLS(LS_SETTINGS,s); applyTheme(s.theme);
+  toast('Paramètres enregistrés'); $('settingsModal').classList.remove('show'); startLockTimer();
+};
+
+// ===================== LOCK =====================
+function startLockTimer(){
+  const s=getLS(LS_SETTINGS)||{}; const min=parseInt(s.lockMin||5);
+  if(state.lockTimer) clearTimeout(state.lockTimer);
+  if(min<=0||state.isLocked) return;
+  state.lockTimer=setTimeout(()=>{ lockSession(); },min*60*1000);
+}
+function resetLockTimer(){ if(state.isLocked) return; startLockTimer(); }
+['click','keydown','touchstart','mousemove'].forEach(ev=>document.addEventListener(ev,resetLockTimer,{passive:true}));
+
+$('lockBtn').onclick=lockSession;
+function lockSession(){ state.isLocked=true; $('lockOverlay').classList.add('show'); }
+$('unlockBtn').onclick=()=>{
+  const pin=$('lockPin').value;
+  if(state.user.role==='student'&&state.user.pin===pin){ state.isLocked=false; $('lockOverlay').classList.remove('show'); $('lockPin').value=''; startLockTimer(); }
+
+  else { toast('PIN incorrect'); }
+};
+
+// ===================== FILE ATTACHMENT & ANALYSIS =====================
+$('fileBtn').onclick=()=>$('fileInput').click();
+
+// Helper: resize image if >4MB for Groq vision API
+function resizeImageBase64(base64DataUrl,maxBytes){
+  return new Promise(resolve=>{
+    const parts=base64DataUrl.split(',');
+    const mime=(parts[0].match(/:(.*?);/)||['','image/jpeg'])[1];
+    const b64=parts[1]||'';
+    const byteLen=Math.ceil(b64.length*3/4);
+    if(byteLen<=maxBytes){ resolve(base64DataUrl); return; }
+    const img=new Image();
+    img.onload=()=>{
+      let w=img.width, h=img.height;
+      let q=0.8;
+      for(let i=0;i<6;i++){
+        const c=document.createElement('canvas');
+        c.width=w; c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        const out=c.toDataURL(mime==='image/png'?'image/png':'image/jpeg',q);
+        const bLen=Math.ceil((out.split(',')[1]||'').length*3/4);
+        if(bLen<=maxBytes){ resolve(out); return; }
+        q=Math.max(q-0.15,0.2);
+        w=Math.round(w*0.7); h=Math.round(h*0.7);
+      }
+      const c=document.createElement('canvas');
+      c.width=512; c.height=Math.round(512*(h/Math.max(img.width,1)));
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      resolve(c.toDataURL('image/jpeg',0.6));
+    };
+    img.onerror=()=>resolve(base64DataUrl);
+    img.src=base64DataUrl;
+  });
+}
+
+// Helper: read image File as base64 with auto-resize
+function readImageAsBase64(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=async()=>{
+      const resized=await resizeImageBase64(reader.result,4*1024*1024);
+      resolve(resized);
+    };
+    reader.onerror=()=>reject(new Error('Lecture échouée'));
+    reader.readAsDataURL(file);
+  });
+}
+
+// Helper: add an image to state.files with preview
+function addImageFile(name,type,base64DataUrl,source){
+  const fileObj={name:name,size:Math.ceil((base64DataUrl.split(',')[1]||'').length*3/4),type:type||'image/jpeg',content:null,base64Data:base64DataUrl,isImage:true,source:source||'file'};
+  state.files.push(fileObj);
+  renderFileChips();
+  toast('🖼️ Image jointe : '+name);
+}
+
+$('fileInput').onchange=async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  if(f.size>5*1024*1024){ toast('Fichier trop gros (max 5 Mo)'); return; }
+  const fileObj={name:f.name,size:f.size,type:f.type,content:null};
+  
+  // Read text-based files
+  const textExts=['.txt','.md','.csv','.json','.html','.css','.js','.py','.java','.c','.cpp','.xml','.sql','.yaml','.yml','.ini','.log','.sh','.bat'];
+  const textTypes=['text/','application/json','application/xml','application/javascript'];
+  const isText=textTypes.some(t=>f.type.startsWith(t))||textExts.some(ext=>f.name.toLowerCase().endsWith(ext));
+  
+  if(isText){
+    try{
+      const content=await f.text();
+      fileObj.content=content;
+      toast('📄 Fichier lu : '+f.name);
+    }catch(err){
+      toast('⚠️ Impossible de lire le fichier');
+    }
+    state.files.push(fileObj);
+    renderFileChips();
+  } else if(f.type.startsWith('image/')){
+    // FIX: Read image as base64 with AWAIT (was race condition before)
+    try{
+      const base64DataUrl=await readImageAsBase64(f);
+      fileObj.base64Data=base64DataUrl;
+      fileObj.isImage=true;
+      toast('🖼️ Image jointe : '+f.name);
+    }catch(err){
+      toast("⚠️ Impossible de lire l'image");
+    }
+    state.files.push(fileObj);
+    renderFileChips();
+  } else {
+    toast('📎 Fichier joint : '+f.name+' (binaire)');
+    state.files.push(fileObj);
+    renderFileChips();
+  }
+  e.target.value='';
+};
+function renderFileChips(){
+  $('fileChips').innerHTML='';
+  state.files.forEach((f,i)=>{
+    const d=document.createElement('div'); d.className='file-chip';
+    if(f.isImage||f.base64Data){
+      d.innerHTML='<img src="'+f.base64Data+'" class="file-chip-thumb" /><span>'+escapeHtml(f.name)+'</span><span class="remove" onclick="removeFile('+i+')">×</span>';
+    } else {
+      d.innerHTML='<span>📎 '+escapeHtml(f.name)+(f.content?' ✅':'')+'</span><span class="remove" onclick="removeFile('+i+')">×</span>';
+    }
+    $('fileChips').appendChild(d);
+  });
+}
+window.removeFile=function(i){ state.files.splice(i,1); renderFileChips(); };
+
+// ===================== CAMERA / OCR =====================
+let camStream=null;
+// ===================== CLIPBOARD PASTE (image) =====================
+$('inputField').addEventListener('paste',async e=>{
+  const items=e.clipboardData&&e.clipboardData.items;
+  if(!items) return;
+  for(const item of items){
+    if(item.type.startsWith('image/')){
+      e.preventDefault();
+      const file=item.getAsFile();
+      if(!file) continue;
+      try{
+        const base64DataUrl=await readImageAsBase64(file);
+        addImageFile('image-presse-papiers.png',file.type,base64DataUrl,'paste');
+      }catch(err){
+        toast("⚠️ Impossible de lire l'image du presse-papiers");
+      }
+      return;
+    }
+  }
+});
+
+// ===================== DRAG & DROP (image) =====================
+const dropZone=$('chatArea');
+['dragenter','dragover'].forEach(ev=>{
+  dropZone.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();dropZone.classList.add('drag-over');},{passive:false});
+});
+['dragleave','drop'].forEach(ev=>{
+  dropZone.addEventListener(ev,e=>{e.preventDefault();e.stopPropagation();dropZone.classList.remove('drag-over');},{passive:false});
+});
+dropZone.addEventListener('drop',async e=>{
+  const files=e.dataTransfer&&e.dataTransfer.files;
+  if(!files||!files.length) return;
+  for(const f of files){
+    if(f.type.startsWith('image/')){
+      if(f.size>5*1024*1024){ toast('Image trop grosse (max 5 Mo)'); continue; }
+      try{
+        const base64DataUrl=await readImageAsBase64(f);
+        addImageFile(f.name,f.type,base64DataUrl,'drop');
+      }catch(err){
+        toast("⚠️ Impossible de lire l'image déposée");
+      }
+    } else if(f.size<=5*1024*1024){
+      const textExts=['.txt','.md','.csv','.json','.html','.css','.js','.py','.java','.c','.cpp','.xml','.sql','.yaml','.yml','.ini','.log','.sh','.bat'];
+      const textTypes=['text/','application/json','application/xml','application/javascript'];
+      const isText=textTypes.some(t=>f.type.startsWith(t))||textExts.some(ext=>f.name.toLowerCase().endsWith(ext));
+      const fileObj={name:f.name,size:f.size,type:f.type,content:null};
+      if(isText){ try{ fileObj.content=await f.text(); toast('📄 Fichier lu : '+f.name); }catch(err){ toast('⚠️ Lecture impossible'); } }
+      else { toast('📎 Fichier déposé : '+f.name); }
+      state.files.push(fileObj);
+      renderFileChips();
+    } else { toast('Fichier trop gros (max 5 Mo)'); }
+  }
+});
+
+$('camBtn').onclick=()=>{ $('cameraModal').classList.add('show'); startCamera(); };
+$('cameraModalClose').onclick=()=>{ stopCamera(); $('cameraModal').classList.remove('show'); };
+function startCamera(){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    $('cameraPlaceholder').textContent='Caméra non disponible sur cet appareil';
+    return;
+  }
+  navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(s=>{
+    camStream=s; $('cameraVideo').srcObject=s;
+    $('cameraPlaceholder').style.display='none'; $('captureBtn').style.display='inline-block';
+  }).catch(err=>{
+    $('cameraPlaceholder').textContent='Accès caméra refusé : '+err.message;
+  });
+}
+function stopCamera(){
+  if(camStream){ camStream.getTracks().forEach(t=>t.stop()); camStream=null; }
+  $('cameraVideo').style.display='block'; $('cameraPhoto').style.display='none';
+  $('captureBtn').style.display='none'; $('retakeBtn').style.display='none';
+  $('ocrCameraBtn').style.display='none'; $('aiAnalyzeCameraBtn').style.display='none'; $('sendPhotoBtn').style.display='none';
+}
+$('captureBtn').onclick=()=>{
+  const v=$('cameraVideo'); const c=document.createElement('canvas');
+  c.width=v.videoWidth||640; c.height=v.videoHeight||480;
+  c.getContext('2d').drawImage(v,0,0);
+  const dataUrl=c.toDataURL('image/jpeg',0.9);
+  $('cameraPhoto').src=dataUrl;
+  state.capturedImageBase64=dataUrl;
+  $('cameraVideo').style.display='none'; $('cameraPhoto').style.display='block';
+  $('captureBtn').style.display='none'; $('retakeBtn').style.display='inline-block';
+  $('ocrCameraBtn').style.display='inline-block';
+  $('aiAnalyzeCameraBtn').style.display='inline-block'; $('sendPhotoBtn').style.display='inline-block';
+};
+$('retakeBtn').onclick=()=>{ state.capturedImageBase64=null; $('cameraVideo').style.display='block'; $('cameraPhoto').style.display='none'; $('captureBtn').style.display='inline-block'; $('retakeBtn').style.display='none'; $('ocrCameraBtn').style.display='none'; $('aiAnalyzeCameraBtn').style.display='none'; $('sendPhotoBtn').style.display='none'; };
+$('ocrCameraBtn').onclick=async()=>{
+  if(!state.capturedImageBase64){ toast("⚠️ Aucune photo capturée"); return; }
+  toast("🔍 Lecture du texte en cours...");
+  sendImageToVision(state.capturedImageBase64, "Lis et extrais tout le texte visible dans cette image. Transcris-le fidèlement.");
+  closeCamera();
+};
+$('sendPhotoBtn').onclick=()=>{ if(!state.capturedImageBase64){ toast("⚠️ Aucune photo capturée"); return; } const customPrompt=$('inputField').value.trim()||"Analyse cette image en détail."; sendImageToVision(state.capturedImageBase64, customPrompt); closeCamera(); };
+$('aiAnalyzeCameraBtn').onclick=()=>{ if(!state.capturedImageBase64){ toast("⚠️ Aucune photo capturée"); return; } const prompt=$('inputField').value.trim()||"Analyse cette image en détail et décris tout ce que tu vois."; sendImageToVision(state.capturedImageBase64, prompt); closeCamera(); };
+$('webdevBtn').onclick=()=>{ showPage('webdevPage'); initWebDev(); };
+$('ocrModalClose').onclick=()=>$('ocrModal').classList.remove('show');
+$('ocrCopyBtn').onclick=()=>{ navigator.clipboard.writeText($('ocrText').value).then(()=>toast('Copié !')); };
+$('ocrSendBtn').onclick=()=>{ $('inputField').value=$('ocrText').value; $('ocrModal').classList.remove('show'); };
+
+// ===================== MICROPHONE (FIXED) =====================
+let recog=null;
+let micAvailable=false;
+
+function initMicrophone(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){
+    micAvailable=false;
+    $('micBtn').title='Micro non supporté sur ce navigateur';
+    $('micBtn').style.opacity='0.5';
+    return;
+  }
+  micAvailable=true;
+  recog=new SR();
+  recog.lang='fr-FR';
+  recog.continuous=false;
+  recog.interimResults=false;
+  recog.maxAlternatives=1;
+  
+  recog.onstart=()=>{ $('micBtn').classList.add('recording'); toast('🎤 Parle maintenant...'); };
+  recog.onresult=e=>{
+    const transcript=e.results[0][0].transcript;
+    $('inputField').value+=($('inputField').value?' ':'')+transcript;
+    $('micBtn').classList.remove('recording');
+    toast('✅ Voix reconnue !');
+  };
+  recog.onerror=e=>{
+    $('micBtn').classList.remove('recording');
+    if(e.error==='not-allowed') toast('❌ Accès au micro refusé. Autorise-le dans les paramètres du navigateur.');
+    else if(e.error==='no-speech') toast('🔇 Aucune parole détectée. Réessaie.');
+    else if(e.error==='network') toast('🌐 Erreur réseau du micro. Vérifie ta connexion.');
+    else toast('⚠️ Erreur micro : '+e.error);
+  };
+  recog.onend=()=>{ $('micBtn').classList.remove('recording'); };
+}
+initMicrophone();
+
+$('micBtn').onclick=()=>{
+  if(!micAvailable){ toast('⚠️ Reconnaissance vocale non supportée. Utilise Chrome ou Edge.'); return; }
+  if($('micBtn').classList.contains('recording')){ recog.stop(); return; }
+  try{ recog.start(); }catch(e){
+    // Restart if already started
+    recog.stop();
+    setTimeout(()=>{ try{recog.start();}catch(e2){toast('⚠️ Impossible de démarrer le micro');} },200);
+  }
+};
+
+// ===================== NEW CHAT =====================
+$('newChatBtn').onclick=newConversation;
+
+// ===================== MOBILE MENU =====================
+$('menuBtn').onclick=()=>$('sidebar').classList.add('open');
+$('overlayMobile').onclick=()=>$('sidebar').classList.remove('open');
+window.addEventListener('resize',()=>{ if(window.innerWidth>768) $('sidebar').classList.remove('open'); });
+
+// ===================== STUDENT LOGOUT =====================
+$('logoutStudentBtn').onclick=()=>{ state.user=null; state.conversations=[]; state.homework=[]; showPage('rolePage'); };
+
+// ===================== USER BADGE =====================
+$('userBadge').onclick=()=>{ toast(state.user.name+' — '+(state.user.class||'')+' / '+(state.user.level||'')); };
+
+// ===================== INIT =====================
+$('statusDot').className='status-dot offline';
+$('statusText').textContent='Hors ligne';
+
+// ===================== WEBDEV STUDIO =====================
+let webdevTab="html";
+let webdevSaveTimer=null;
+
+function initWebDev(){
+  const saved=getLS("profai_webdev");
+  if(saved){
+    $("webdevHtml").value=saved.html||"";
+    $("webdevCss").value=saved.css||"";
+    $("webdevJs").value=saved.js||"";
+    $("webdevFull").value=saved.full||"";
+  }
+  switchWebdevTab(webdevTab);
+  updateWebdevPreview();
+}
+
+function switchWebdevTab(tab){
+  webdevTab=tab;
+  document.querySelectorAll(".webdev-tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===tab));
+  $("webdevHtml").style.display=tab==="html"?"":"none";
+  $("webdevCss").style.display=tab==="css"?"":"none";
+  $("webdevJs").style.display=tab==="js"?"":"none";
+  $("webdevFull").style.display=tab==="full"?"":"none";
+  if(tab==="full") syncFullEditor();
+}
+
+function syncFullEditor(){
+  const h=$("webdevHtml").value;
+  const c=$("webdevCss").value;
+  const j=$("webdevJs").value;
+  let full=h;
+  if(c.trim()){
+    if(full.includes("</style>")){
+      full=full.replace("</style>",c+"</style>");
+    } else if(full.includes("</head>")){
+      full=full.replace("</head>","<style>"+c+"</style></head>");
+    } else {
+      full="<style>"+c+"</style>"+full;
+    }
+  }
+  if(j.trim()){
+    const esc=j.replace(/<\/script/g,"<\\/script");
+    if(full.includes("</body>")){
+      full=full.replace("</body>","<script>"+esc+"<\/script></body>");
+    } else {
+      full=full+"<script>"+esc+"<\/script>";
+    }
+  }
+  $("webdevFull").value=full;
+}
+
+function buildFullHtml(){
+  const h=$("webdevHtml").value;
+  const c=$("webdevCss").value;
+  const j=$("webdevJs").value;
+  let full=h;
+  if(c.trim()){
+    if(full.includes("</style>")){
+      full=full.replace("</style>",c+"</style>");
+    } else if(full.includes("</head>")){
+      full=full.replace("</head>","<style>"+c+"</style></head>");
+    } else {
+      full="<style>"+c+"</style>"+full;
+    }
+  }
+  if(j.trim()){
+    const esc=j.replace(/<\/script/g,"<\\/script");
+    if(full.includes("</body>")){
+      full=full.replace("</body>","<script>"+esc+"<\/script></body>");
+    } else {
+      full=full+"<script>"+esc+"<\/script>";
+    }
+  }
+  return full;
+}
+
+function updateWebdevPreview(){
+  const full=buildFullHtml();
+  const iframe=$("webdevPreview");
+  iframe.srcdoc=full;
+  $("webdevStatus").textContent="Aper\u00e7u mis \u00e0 jour";
+  autoSaveWebdev();
+}
+
+function autoSaveWebdev(){
+  if(webdevSaveTimer) clearTimeout(webdevSaveTimer);
+  webdevSaveTimer=setTimeout(()=>{
+    setLS("profai_webdev",{
+      html:$("webdevHtml").value,
+      css:$("webdevCss").value,
+      js:$("webdevJs").value,
+      full:$("webdevFull").value
+    });
+    $("webdevAutoSave").textContent="Sauvegard\u00e9 \u2713";
+    setTimeout(()=>{$("webdevAutoSave").textContent="Auto-sauvegarde: actif";},2000);
+  },1000);
+}
+
+function downloadWebdev(){
+  const full=buildFullHtml();
+  const blob=new Blob([full],{type:"text/html"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url; a.download="projet.html";
+  a.click(); URL.revokeObjectURL(url);
+  toast("Fichier t\u00e9l\u00e9charg\u00e9 !");
+}
+
+function webdevAiHelp(){
+  openWebdevAiDialog();
+}
+
+// ====== WEBDEV AI DIALOG ======
+let webdevAiDialogActive=false;
+function openWebdevAiDialog(){
+  webdevAiDialogActive=true;
+  const dlg=$("webdevAiDialog");
+  dlg.style.display="flex";
+  $("webdevAiPrompt").value="";
+  $("webdevAiPrompt").focus();
+  // Populate prompt with current code context
+  const h=$("webdevHtml").value;
+  const c=$("webdevCss").value;
+  const j=$("webdevJs").value;
+  const summary="[Projet actuel : "+getCurrentWebdevProjectName()+" | HTML: "+(h?h.length:0)+" car. | CSS: "+(c?c.length:0)+" car. | JS: "+(j?j.length:0)+" car.]";
+  dlg.dataset.codeSummary=summary;
+}
+function closeWebdevAiDialog(){
+  webdevAiDialogActive=false;
+  $("webdevAiDialog").style.display="none";
+}
+
+$("webdevAiDialogClose").onclick=closeWebdevAiDialog;
+$("webdevAiCancelBtn").onclick=closeWebdevAiDialog;
+$("webdevAiDialog").onclick=e=>{if(e.target.id==="webdevAiDialog")closeWebdevAiDialog();};
+
+// Preset buttons
+document.querySelectorAll(".webdev-ai-preset").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".webdev-ai-preset").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    const p=btn.dataset.preset;
+    const prompts={
+      create:"Cr\u00e9e un site web complet avec une structure HTML, un style CSS moderne et du JavaScript interactif. Th\u00e8me : ",
+      fix:"J\u2019ai un bug dans mon code. Voici le code actuel, trouve et corrige le probl\u00e8me : ",
+      feature:"Ajoute cette fonctionnalit\u00e9 \u00e0 mon site web : ",
+      redesign:"Redesigne compl\u00e8tement le style de mon site pour le rendre moderne et professionnel. Th\u00e8me souhait\u00e9 : ",
+      optimize:"Optimise mon code pour de meilleures performances et une meilleure structure : ",
+      responsive:"Rends mon site web responsive pour mobile, tablette et desktop. Ajoute les media queries n\u00e9cessaires."
+    };
+    $("webdevAiPrompt").value=prompts[p]||"";
+    $("webdevAiPrompt").focus();
+  };
+});
+
+// Send AI request
+$("webdevAiSendBtn").onclick=()=>{
+  const prompt=$("webdevAiPrompt").value.trim();
+  if(!prompt){toast("\u26a0\ufe0f D\u00e9cris ce que tu veux");return;}
+
+  closeWebdevAiDialog();
+  // Switch to chat and send specialized webdev prompt
+  showPage("appPage");
+  state._webdevWaitingApply=true;
+  // Build context with current code
+  const h=$("webdevHtml").value;
+  const c=$("webdevCss").value;
+  const j=$("webdevJs").value;
+  const projectName=getCurrentWebdevProjectName();
+  let fullPrompt="[WebDev Studio - Projet : "+projectName+"]\n\n"+prompt+"\n\n--- CODE ACTUEL ---\n";
+  if(h.trim())fullPrompt+="\n[HTML]:\n\u0060\u0060\u0060html\n"+h+"\n\u0060\u0060\u0060\n";
+  if(c.trim())fullPrompt+="\n[CSS]:\n\u0060\u0060\u0060css\n"+c+"\n\u0060\u0060\u0060\n";
+  if(j.trim())fullPrompt+="\n[JS]:\n\u0060\u0060\u0060javascript\n"+j+"\n\u0060\u0060\u0060\n";
+  fullPrompt+="\n--- FIN DU CODE ---\n\nFournis le code complet pour chaque fichier modifi\u00e9 dans des blocs s\u00e9par\u00e9s avec le langage sp\u00e9cifi\u00e9 (\u0060\u0060\u0060html, \u0060\u0060\u0060css, \u0060\u0060\u0060javascript).";
+  $("inputField").value=fullPrompt;
+  sendMessage();
+};
+
+// ====== APPLY AI CODE TO WEBDEV ======
+function applyAiCodeToWebdev(code,lang){
+  if(!code||!code.trim()){toast("\u26a0\ufe0f Aucun code \u00e0 appliquer");return;}
+  // Map language names
+  const langMap={javascript:"js",js:"js",css:"css",html:"html",htm:"html"};
+  const targetLang=langMap[lang]||"html";
+  const editorIds={html:"webdevHtml",css:"webdevCss",js:"webdevJs"};
+  const editorId=editorIds[targetLang];
+  if(!editorId){toast("\u26a0\ufe0f Langage non reconnu : "+lang);return;}
+  const editor=$(editorId);
+  if(!editor){toast("\u26a0\ufe0f \u00c9diteur non trouv\u00e9");return;}
+  // Confirm before replacing
+  const label={html:"HTML",css:"CSS",js:"JavaScript"}[targetLang];
+  if(editor.value.trim()&&!confirm("Remplacer le contenu "+label+" actuel par le code de l\u2019IA ?")){
+    return;
+  }
+  editor.value=code;
+  switchWebdevTab(targetLang);
+  updateWebdevPreview();
+  showPage("webdevPage");
+  state._webdevWaitingApply=false;
+  toast("\u2705 Code "+label+" appliqu\u00e9 !");
+}
+
+// ====== WEBDEV PROJECT MANAGER ======
+const WEBDEV_PROJECTS_KEY="profai_webdev_projects";
+const WEBDEV_CURRENT_PROJECT_KEY="profai_webdev_current_project";
+
+function getWebdevProjects(){
+  return getLS(WEBDEV_PROJECTS_KEY)||{};
+}
+function setWebdevProjects(projects){
+  setLS(WEBDEV_PROJECTS_KEY,projects);
+}
+function getCurrentWebdevProjectName(){
+  return getLS(WEBDEV_CURRENT_PROJECT_KEY)||"Mon Site";
+}
+function setCurrentWebdevProjectName(name){
+  setLS(WEBDEV_CURRENT_PROJECT_KEY,name);
+}
+
+function listWebdevProjects(){
+  return Object.keys(getWebdevProjects());
+}
+
+function createWebdevProject(name){
+  if(!name||!name.trim())return;
+  const projects=getWebdevProjects();
+  if(projects[name]){toast("\u26a0\ufe0f Ce projet existe d\u00e9j\u00e0");return;}
+  projects[name]={html:"<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body { font-family: Arial; text-align: center; padding: 40px; }\n    h1 { color: #6366f1; }\n  </style>\n</head>\n<body>\n  <h1>"+escapeHtml(name)+"</h1>\n  <p>Bienvenue !</p>\n</body>\n</html>",css:"/* Ton CSS ici */",js:"// Ton JavaScript ici",full:"",created:Date.now()};
+  setWebdevProjects(projects);
+  setCurrentWebdevProjectName(name);
+  loadWebdevProject(name);
+  refreshWebdevProjectSelect();
+  toast("\u2705 Projet \u00ab "+name+" \u00bb cr\u00e9\u00e9 !");
+}
+
+function loadWebdevProject(name){
+  const projects=getWebdevProjects();
+  const p=projects[name];
+  if(!p){toast("\u26a0\ufe0f Projet non trouv\u00e9");return;}
+  // Save current project first
+  saveCurrentWebdevProject();
+  $("webdevHtml").value=p.html||"";
+  $("webdevCss").value=p.css||"";
+  $("webdevJs").value=p.js||"";
+  $("webdevFull").value=p.full||"";
+  setCurrentWebdevProjectName(name);
+  switchWebdevTab("html");
+  updateWebdevPreview();
+  refreshWebdevProjectSelect();
+  toast("\U0001f4c2 Projet \u00ab "+name+" \u00bb charg\u00e9 !");
+}
+
+function deleteWebdevProject(name){
+  const projects=getWebdevProjects();
+  if(!projects[name])return;
+  delete projects[name];
+  setWebdevProjects(projects);
+  const names=Object.keys(projects);
+  if(getCurrentWebdevProjectName()===name){
+    if(names.length>0){
+      loadWebdevProject(names[0]);
+    } else {
+      createWebdevProject("Mon Site");
+    }
+  }
+  refreshWebdevProjectSelect();
+  toast("\U0001f5d1\ufe0f Projet \u00ab "+name+" \u00bb supprim\u00e9");
+}
+
+function renameWebdevProject(oldName,newName){
+  if(!newName||!newName.trim())return;
+  const projects=getWebdevProjects();
+  if(!projects[oldName])return;
+  if(projects[newName]&&oldName!==newName){toast("\u26a0\ufe0f Ce nom est d\u00e9j\u00e0 utilis\u00e9");return;}
+  projects[newName]=projects[oldName];
+  delete projects[oldName];
+  setWebdevProjects(projects);
+  if(getCurrentWebdevProjectName()===oldName) setCurrentWebdevProjectName(newName);
+  refreshWebdevProjectSelect();
+  toast("\u2705 Projet renomm\u00e9 en \u00ab "+newName+" \u00bb");
+}
+
+function saveCurrentWebdevProject(){
+  const name=getCurrentWebdevProjectName();
+  const projects=getWebdevProjects();
+  projects[name]={html:$("webdevHtml").value,css:$("webdevCss").value,js:$("webdevJs").value,full:$("webdevFull").value,updated:Date.now()};
+  setWebdevProjects(projects);
+}
+
+function refreshWebdevProjectSelect(){
+  const sel=$("webdevProjectSelect");
+  if(!sel)return;
+  sel.innerHTML="";
+  const names=listWebdevProjects();
+  const current=getCurrentWebdevProjectName();
+  names.forEach(n=>{
+    const opt=document.createElement("option");
+    opt.value=n;
+    opt.textContent=n;
+    if(n===current) opt.selected=true;
+    sel.appendChild(opt);
+  });
+}
+
+// Project selector event
+$("webdevProjectSelect").onchange=function(){
+  const name=this.value;
+  if(name) loadWebdevProject(name);
+};
+
+// New project button
+$("webdevNewProjectBtn").onclick=()=>{
+  const name=prompt("Nom du nouveau projet :");
+  if(name&&name.trim()) createWebdevProject(name.trim());
+};
+
+// Rename project button
+$("webdevRenameProjectBtn").onclick=()=>{
+  const current=getCurrentWebdevProjectName();
+  const newName=prompt("Nouveau nom du projet :",current);
+  if(newName&&newName.trim()&&newName.trim()!==current) renameWebdevProject(current,newName.trim());
+};
+
+// Delete project button
+$("webdevDeleteProjectBtn").onclick=()=>{
+  const current=getCurrentWebdevProjectName();
+  if(!confirm("Supprimer le projet \u00ab "+current+" \u00bb ?"))return;
+  deleteWebdevProject(current);
+};
+
+function saveWebdev(){
+  saveCurrentWebdevProject();
+  // Also save to legacy key for compatibility
+  setLS("profai_webdev",{html:$("webdevHtml").value,css:$("webdevCss").value,js:$("webdevJs").value,full:$("webdevFull").value});
+  toast("\U0001f4be Projet sauvegard\u00e9 !");
+}
+
+function loadWebdev(){
+  const name=getCurrentWebdevProjectName();
+  loadWebdevProject(name);
+}
+
+function downloadWebdev(){
+  const full=buildFullHtml();
+  const blob=new Blob([full],{type:"text/html"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url; a.download=getCurrentWebdevProjectName().replace(/[^a-zA-Z0-9]/g,"_")+".html";
+  a.click(); URL.revokeObjectURL(url);
+  toast("Fichier t\u00e9l\u00e9charg\u00e9 !");
+}
+
+function newWebdev(){
+  if(!confirm("R\u00e9initialiser le code de ce projet ?"))return;
+  $("webdevHtml").value="<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body { font-family: Arial; text-align: center; padding: 40px; }\n    h1 { color: #6366f1; }\n  </style>\n</head>\n<body>\n  <h1>"+escapeHtml(getCurrentWebdevProjectName())+"</h1>\n  <p>Bienvenue !</p>\n</body>\n</html>";
+  $("webdevCss").value="/* Ton CSS ici */";
+  $("webdevJs").value="// Ton JavaScript ici";
+  $("webdevFull").value="";
+  switchWebdevTab("html");
+  updateWebdevPreview();
+}
+
+// Override autoSaveWebdev to use project manager
+function autoSaveWebdev(){
+  if(webdevSaveTimer) clearTimeout(webdevSaveTimer);
+  webdevSaveTimer=setTimeout(()=>{
+    saveCurrentWebdevProject();
+    $("webdevAutoSave").textContent="Sauvegard\u00e9 \u2713";
+    setTimeout(()=>{$("webdevAutoSave").textContent="Auto-sauvegarde: actif";},2000);
+  },1000);
+}
+
+// Override initWebDev to use project manager
+function initWebDev(){
+  // Migrate legacy single-project data
+  const legacy=getLS("profai_webdev");
+  const projects=getWebdevProjects();
+  if(legacy&&Object.keys(projects).length===0){
+    // First time: migrate old data as "Mon Site"
+    projects["Mon Site"]={html:legacy.html||"",css:legacy.css||"",js:legacy.js||"",full:legacy.full||"",created:Date.now()};
+    setWebdevProjects(projects);
+    setCurrentWebdevProjectName("Mon Site");
+  }
+  if(Object.keys(projects).length===0){
+    createWebdevProject("Mon Site");
+  }
+  const current=getCurrentWebdevProjectName();
+  const p=getWebdevProjects()[current];
+  if(p){
+    $("webdevHtml").value=p.html||"";
+    $("webdevCss").value=p.css||"";
+    $("webdevJs").value=p.js||"";
+    $("webdevFull").value=p.full||"";
+  }
+  switchWebdevTab(webdevTab);
+  updateWebdevPreview();
+  refreshWebdevProjectSelect();
+}
+
+// WebDev event listeners (updated - removed loadBtn, added new buttons)
+document.addEventListener("DOMContentLoaded",()=>{
+  document.querySelectorAll(".webdev-tab").forEach(tab=>{
+    tab.addEventListener("click",()=>switchWebdevTab(tab.dataset.tab));
+  });
+
+  let previewTimer=null;
+  ["webdevHtml","webdevCss","webdevJs","webdevFull"].forEach(id=>{
+    const el=$(id);
+    if(!el) return;
+    el.addEventListener("input",()=>{
+      if(previewTimer) clearTimeout(previewTimer);
+      previewTimer=setTimeout(updateWebdevPreview,500);
+    });
+    el.addEventListener("keydown",(e)=>{
+      if(e.key==="Tab"){
+        e.preventDefault();
+        const s=el.selectionStart,end=el.selectionEnd;
+        el.value=el.value.substring(0,s)+"  "+el.value.substring(end);
+        el.selectionStart=el.selectionEnd=s+2;
+        el.dispatchEvent(new Event("input"));
+      }
+    });
+  });
+
+  const backBtn=$("webdevBackBtn");
+  if(backBtn) backBtn.addEventListener("click",()=>{saveCurrentWebdevProject();showPage("appPage");});
+  const aiBtn=$("webdevAiBtn");
+  if(aiBtn) aiBtn.addEventListener("click",webdevAiHelp);
+  const newBtn=$("webdevNewBtn");
+  if(newBtn) newBtn.addEventListener("click",newWebdev);
+  const saveBtn=$("webdevSaveBtn");
+  if(saveBtn) saveBtn.addEventListener("click",saveWebdev);
+  const dlBtn=$("webdevDownloadBtn");
+  if(dlBtn) dlBtn.addEventListener("click",downloadWebdev);
+});
+
+
+// ===================== PYTHON STUDIO (PYODIDE) =====================
+const PYDEV_PROJECTS_KEY="profai_pydev_projects";
+const PYDEV_CURRENT_PROJECT_KEY="profai_pydev_current_project";
+let pyodideInstance=null;
+let pyodideLoading=false;
+let pyodideReady=false;
+let pydevRunning=false;
+let pydevSaveTimer=null;
+
+async function loadPyodideRuntime(){
+  if(pyodideReady) return pyodideInstance;
+  if(pyodideLoading){
+    // Wait for existing load
+    while(pyodideLoading){
+      await new Promise(r=>setTimeout(r,200));
+    }
+    return pyodideInstance;
+  }
+  pyodideLoading=true;
+  $("pydevStatus").textContent="\U0001f40d Chargement de Python (Pyodide)...";
+  $("pydevOutput").innerHTML="<span style=\"color:var(--primary-light)\">\u23f3 Chargement de l\u2019environnement Python...<br>Cela peut prendre quelques secondes au premier lancement.</span>";
+  try{
+    // Load Pyodide script dynamically
+    if(!window.loadPyodide){
+      await new Promise((resolve,reject)=>{
+        const s=document.createElement("script");
+        s.src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js";
+        s.onload=resolve;
+        s.onerror=()=>reject(new Error("Impossible de charger Pyodide"));
+        document.head.appendChild(s);
+      });
+    }
+    pyodideInstance=await loadPyodide({
+      indexURL:"https://cdn.jsdelivr.net/pyodide/v0.25.1/full/"
+    });
+    pyodideReady=true;
+    pyodideLoading=false;
+    $("pydevStatus").textContent="\U0001f40d Python Studio \u2014 Pr\u00eat (Pyodide v0.25.1)";
+    $("pydevOutput").innerHTML="<span style=\"color:var(--accent)\">\u2705 Python est pr\u00eat ! \u00c9cris ton code et clique sur \u25b6 Ex\u00e9cuter.</span>";
+    toast("\u2705 Python charg\u00e9 avec succ\u00e8s !");
+    return pyodideInstance;
+  }catch(e){
+    pyodideLoading=false;
+    $("pydevStatus").textContent="\U0001f40d Python Studio \u2014 Erreur de chargement";
+    $("pydevOutput").innerHTML="<span class=\"py-error\">\u274c Erreur lors du chargement de Python : "+escapeHtml(e.message)+"</span>";
+    toast("\u26a0\ufe0f Impossible de charger Python");
+    throw e;
+  }
+}
+
+async function runPythonCode(){
+  if(pydevRunning){toast("\u26a0\ufe0f Code d\u00e9j\u00e0 en cours d\u2019ex\u00e9cution");return;}
+  const code=$("pydevEditor").value;
+  if(!code.trim()){toast("\u26a0\ufe0f Aucun code \u00e0 ex\u00e9cuter");return;}
+  
+  // Ensure Pyodide is loaded
+  try{
+    if(!pyodideReady) await loadPyodideRuntime();
+  }catch(e){return;}
+  
+  pydevRunning=true;
+  $("pydevRunBtn").disabled=true;
+  $("pydevRunBtn").innerHTML="\u23f3 En cours...";
+  $("pydevStatus").textContent="\U0001f40d Ex\u00e9cution en cours...";
+  
+  // Capture stdout and stderr
+  let stdoutText="";
+  let stderrText="";
+  let graphImages=[];
+  
+  pyodideInstance.setStdout({
+    batched:(msg)=>{stdoutText+=msg+"\n";}
+  });
+  pyodideInstance.setStderr({
+    batched:(msg)=>{stderrText+=msg+"\n";}
+  });
+  
+  // Setup matplotlib to render to base64
+  try{
+    await pyodideInstance.runPythonAsync(`
+import matplotlib
+matplotlib.use("agg")
+import matplotlib.pyplot as plt
+import io, base64, sys
+
+def _pydev_show():
+    for fig_num in plt.get_fignums():
+        fig = plt.figure(fig_num)
+        buf = io.BytesIO()
+        fig.savefig(buf, format="png", dpi=100, bbox_inches="tight")
+        buf.seek(0)
+        b64 = base64.b64encode(buf.read()).decode("utf-8")
+        sys.stdout.write("__PYDEV_GRAPH__:" + b64 + "\n")
+        buf.close()
+    plt.close("all")
+`);
+  }catch(e){/* matplotlib not available yet, that is fine */}
+  
+  try{
+    await pyodideInstance.runPythonAsync(code);
+    
+    // Auto-show matplotlib figures if any
+    try{
+      await pyodideInstance.runPythonAsync("_pydev_show()");
+    }catch(e2){/* ignore */}
+    
+    // Build output HTML
+    let html="";
+    
+    // Parse graph images from stdout
+    const lines=stdoutText.split("\n");
+    let cleanStdout="";
+    for(const line of lines){
+      if(line.startsWith("__PYDEV_GRAPH__:")){
+        const b64=line.substring("__PYDEV_GRAPH__:".length);
+        html+="<div class=\"py-graph\"><img src=\"data:image/png;base64,"+b64+"\" /></div>";
+      }else{
+        cleanStdout+=line+"\n";
+      }
+    }
+    
+    if(cleanStdout.trim()){
+      html+="<span>"+escapeHtml(cleanStdout.trim())+"</span>";
+    }
+    if(stderrText.trim()){
+      html+="<span class=\"py-error\">"+escapeHtml(stderrText.trim())+"</span>";
+    }
+    
+    $("pydevOutput").innerHTML=html||"<span style=\"color:var(--text-secondary)\">\u2705 Code ex\u00e9cut\u00e9 (aucune sortie)</span>";
+    $("pydevStatus").textContent="\U0001f40d Python Studio \u2014 Ex\u00e9cution termin\u00e9e";
+    toast("\u2705 Code ex\u00e9cut\u00e9 !");
+  }catch(e){
+    const errMsg=e.message||String(e);
+    // Try to extract Python traceback
+    let tbHtml="<span class=\"py-error\">";
+    const lines=errMsg.split("\n");
+    for(const line of lines){
+      if(line.includes("File \"<")){tbHtml+=escapeHtml(line)+"<br>";}
+    }
+    tbHtml+=escapeHtml(lines[lines.length-1]||errMsg);
+    tbHtml+="</span>";
+    if(stdoutText.trim()){
+      tbHtml="<span>"+escapeHtml(stdoutText.trim())+"</span><br>"+tbHtml;
+    }
+    $("pydevOutput").innerHTML=tbHtml;
+    $("pydevStatus").textContent="\U0001f40d Python Studio \u2014 Erreur d\u2019ex\u00e9cution";
+    toast("\u26a0\ufe0f Erreur dans le code Python");
+  }finally{
+    pydevRunning=false;
+    $("pydevRunBtn").disabled=false;
+    $("pydevRunBtn").innerHTML="\u25b6 Ex\u00e9cuter";
+  }
+}
+
+async function installPythonPackage(pkgName){
+  if(!pkgName||!pkgName.trim())return;
+  pkgName=pkgName.trim();
+  // Ensure Pyodide is loaded
+  try{
+    if(!pyodideReady) await loadPyodideRuntime();
+  }catch(e){return;}
+  
+  $("pydevStatus").textContent="\U0001f40d Installation de "+pkgName+"...";
+  toast("\U0001f4e6 Installation de "+pkgName+"...");
+  try{
+    await pyodideInstance.runPythonAsync(`
+import micropip
+await micropip.install("${pkgName}")
+`);
+    // Add to package list display
+    const list=$("pydevPkgList");
+    const tag=document.createElement("span");
+    tag.className="pydev-pkg-tag";
+    tag.textContent=pkgName;
+    tag.onclick=()=>{tag.remove();};
+    list.appendChild(tag);
+    $("pydevStatus").textContent="\U0001f40d Python Studio \u2014 Pr\u00eat";
+    toast("\u2705 "+pkgName+" install\u00e9 !");
+  }catch(e){
+    $("pydevStatus").textContent="\U0001f40d Python Studio \u2014 Erreur d\u2019installation";
+    toast("\u26a0\ufe0f Impossible d\u2019installer "+pkgName);
+    $("pydevOutput").innerHTML="<span class=\"py-error\">\u274c Erreur d\u2019installation : "+escapeHtml(e.message)+"</span>";
+  }
+}
+
+// ====== PYTHON PROJECT MANAGER ======
+function getPydevProjects(){
+  return getLS(PYDEV_PROJECTS_KEY)||{};
+}
+function setPydevProjects(projects){
+  setLS(PYDEV_PROJECTS_KEY,projects);
+}
+function getCurrentPydevProjectName(){
+  return getLS(PYDEV_CURRENT_PROJECT_KEY)||"Mon Script";
+}
+function setCurrentPydevProjectName(name){
+  setLS(PYDEV_CURRENT_PROJECT_KEY,name);
+}
+function listPydevProjects(){
+  return Object.keys(getPydevProjects());
+}
+function createPydevProject(name){
+  if(!name||!name.trim())return;
+  const projects=getPydevProjects();
+  if(projects[name]){toast("\u26a0\ufe0f Ce projet existe d\u00e9j\u00e0");return;}
+  projects[name]={code:"# "+name+"\n# \u00c9cris ton code Python ici\n\nprint(\"Bonjour !\")\n",packages:[],created:Date.now()};
+  setPydevProjects(projects);
+  setCurrentPydevProjectName(name);
+  loadPydevProject(name);
+  refreshPydevProjectSelect();
+  toast("\u2705 Projet \u00ab "+name+" \u00bb cr\u00e9\u00e9 !");
+}
+function loadPydevProject(name){
+  const projects=getPydevProjects();
+  const p=projects[name];
+  if(!p){toast("\u26a0\ufe0f Projet non trouv\u00e9");return;}
+  saveCurrentPydevProject();
+  $("pydevEditor").value=p.code||"";
+  // Restore package list
+  const list=$("pydevPkgList");
+  list.innerHTML="";
+  (p.packages||[]).forEach(pkg=>{
+    const tag=document.createElement("span");
+    tag.className="pydev-pkg-tag";
+    tag.textContent=pkg;
+    tag.onclick=()=>{tag.remove();};
+    list.appendChild(tag);
+  });
+  setCurrentPydevProjectName(name);
+  refreshPydevProjectSelect();
+  toast("\U0001f4c2 Projet \u00ab "+name+" \u00bb charg\u00e9 !");
+}
+function deletePydevProject(name){
+  const projects=getPydevProjects();
+  if(!projects[name])return;
+  delete projects[name];
+  setPydevProjects(projects);
+  const names=Object.keys(projects);
+  if(getCurrentPydevProjectName()===name){
+    if(names.length>0) loadPydevProject(names[0]);
+    else createPydevProject("Mon Script");
+  }
+  refreshPydevProjectSelect();
+  toast("\U0001f5d1\ufe0f Projet \u00ab "+name+" \u00bb supprim\u00e9");
+}
+function renamePydevProject(oldName,newName){
+  if(!newName||!newName.trim())return;
+  const projects=getPydevProjects();
+  if(!projects[oldName])return;
+  if(projects[newName]&&oldName!==newName){toast("\u26a0\ufe0f Ce nom est d\u00e9j\u00e0 utilis\u00e9");return;}
+  projects[newName]=projects[oldName];
+  delete projects[oldName];
+  setPydevProjects(projects);
+  if(getCurrentPydevProjectName()===oldName) setCurrentPydevProjectName(newName);
+  refreshPydevProjectSelect();
+  toast("\u2705 Projet renomm\u00e9 en \u00ab "+newName+" \u00bb");
+}
+function saveCurrentPydevProject(){
+  const name=getCurrentPydevProjectName();
+  const projects=getPydevProjects();
+  // Collect installed packages from tags
+  const pkgTags=document.querySelectorAll(".pydev-pkg-tag");
+  const packages=Array.from(pkgTags).map(t=>t.textContent);
+  projects[name]={code:$("pydevEditor").value,packages:packages,updated:Date.now()};
+  setPydevProjects(projects);
+}
+function refreshPydevProjectSelect(){
+  const sel=$("pydevProjectSelect");
+  if(!sel)return;
+  sel.innerHTML="";
+  const names=listPydevProjects();
+  const current=getCurrentPydevProjectName();
+  names.forEach(n=>{
+    const opt=document.createElement("option");
+    opt.value=n;
+    opt.textContent=n;
+    if(n===current) opt.selected=true;
+    sel.appendChild(opt);
+  });
+}
+function autoSavePydev(){
+  if(pydevSaveTimer) clearTimeout(pydevSaveTimer);
+  pydevSaveTimer=setTimeout(()=>{
+    saveCurrentPydevProject();
+    $("pydevAutoSave").textContent="Sauvegard\u00e9 \u2713";
+    setTimeout(()=>{$("pydevAutoSave").textContent="Auto-sauvegarde: actif";},2000);
+  },1000);
+}
+function savePydev(){
+  saveCurrentPydevProject();
+  toast("\U0001f4be Projet sauvegard\u00e9 !");
+}
+function downloadPydev(){
+  const code=$("pydevEditor").value;
+  const blob=new Blob([code],{type:"text/x-python"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url; a.download=getCurrentPydevProjectName().replace(/[^a-zA-Z0-9]/g,"_")+".py";
+  a.click(); URL.revokeObjectURL(url);
+  toast("Fichier t\u00e9l\u00e9charg\u00e9 !");
+}
+function newPydev(){
+  if(!confirm("R\u00e9initialiser le code de ce projet ?"))return;
+  $("pydevEditor").value="# "+getCurrentPydevProjectName()+"\n# \u00c9cris ton code Python ici\n\nprint(\"Bonjour !\")\n";
+}
+
+// ====== PYTHON AI DIALOG ======
+let pydevAiDialogActive=false;
+function openPydevAiDialog(){
+  pydevAiDialogActive=true;
+  const dlg=$("pydevAiDialog");
+  dlg.style.display="flex";
+  $("pydevAiPrompt").value="";
+  $("pydevAiPrompt").focus();
+  const code=$("pydevEditor").value;
+  const pkgs=document.querySelectorAll(".pydev-pkg-tag");
+  const pkgList=Array.from(pkgs).map(t=>t.textContent).join(", ");
+  const summary="[Projet actuel : "+getCurrentPydevProjectName()+" | Python: "+(code?code.length:0)+" car."+(pkgList?" | Packages: "+pkgList:"")+"]";
+  dlg.dataset.codeSummary=summary;
+}
+function closePydevAiDialog(){
+  pydevAiDialogActive=false;
+  $("pydevAiDialog").style.display="none";
+}
+
+// Preset buttons for Python
+function initPydevAiPresets(){
+  document.querySelectorAll(".pydev-ai-preset").forEach(btn=>{
+    btn.onclick=()=>{
+      document.querySelectorAll(".pydev-ai-preset").forEach(b=>b.classList.remove("active"));
+      btn.classList.add("active");
+      const p=btn.dataset.preset;
+      const prompts={
+        create:"Cr\u00e9e un script Python complet et fonctionnel. Th\u00e8me : ",
+        fix:"J\u2019ai une erreur dans mon code Python. Voici le code, trouve et corrige le probl\u00e8me : ",
+        algo:"\u00c9cris un algorithme Python pour : ",
+        data:"Cr\u00e9e un script d\u2019analyse de donn\u00e9es avec pandas/matplotlib pour : ",
+        game:"Cr\u00e9e un mini-jeu en Python (textuel) pour : ",
+        math:"R\u00e9sous ce probl\u00e8me de maths/physique en Python : "
+      };
+      $("pydevAiPrompt").value=prompts[p]||"";
+      $("pydevAiPrompt").focus();
+    };
+  });
+}
+
+// Apply AI-generated Python code to editor
+function applyAiCodeToPydev(code){
+  if(!code||!code.trim()){toast("\u26a0\ufe0f Aucun code \u00e0 appliquer");return;}
+  const editor=$("pydevEditor");
+  if(editor.value.trim()&&!confirm("Remplacer le code Python actuel par le code de l\u2019IA ?")){
+    return;
+  }
+  editor.value=code;
+  showPage("pydevPage");
+  state._pydevWaitingApply=false;
+  toast("\u2705 Code Python appliqu\u00e9 !");
+}
+
+// ====== PYTHON STUDIO INIT ======
+function initPyDev(){
+  // Migrate if needed
+  const projects=getPydevProjects();
+  if(Object.keys(projects).length===0){
+    createPydevProject("Mon Script");
+  }
+  const current=getCurrentPydevProjectName();
+  const p=getPydevProjects()[current];
+  if(p){
+    $("pydevEditor").value=p.code||"";
+    const list=$("pydevPkgList");
+    list.innerHTML="";
+    (p.packages||[]).forEach(pkg=>{
+      const tag=document.createElement("span");
+      tag.className="pydev-pkg-tag";
+      tag.textContent=pkg;
+      tag.onclick=()=>{tag.remove();};
+      list.appendChild(tag);
+    });
+  }
+  refreshPydevProjectSelect();
+  // Update status
+  if(pyodideReady){
+    $("pydevStatus").textContent="\U0001f40d Python Studio \u2014 Pr\u00eat (Pyodide v0.25.1)";
+  }else{
+    $("pydevStatus").textContent="\U0001f40d Python Studio \u2014 Clique sur \u25b6 Ex\u00e9cuter pour charger Python";
+    $("pydevOutput").innerHTML="<span style=\"color:var(--text-secondary)\">Clique sur \u25b6 Ex\u00e9cuter pour charger l\u2019environnement Python (Pyodide).<br>Le premier chargement peut prendre quelques secondes.</span>";
+  }
+}
+
+// ====== PYTHON STUDIO EVENT LISTENERS ======
+$("pydevBtn").onclick=()=>{showPage("pydevPage");initPyDev();};
+$("pydevBackBtn").onclick=()=>{saveCurrentPydevProject();showPage("appPage");};
+$("pydevRunBtn").onclick=()=>runPythonCode();
+$("pydevClearOutputBtn").onclick=()=>{$("pydevOutput").innerHTML="";};
+$("pydevPkgInstallBtn").onclick=()=>{
+  const pkg=$("pydevPkgInput").value.trim();
+  if(!pkg){toast("\u26a0\ufe0f Entre un nom de package");return;}
+  installPythonPackage(pkg);
+  $("pydevPkgInput").value="";
+};
+$("pydevPkgInput").onkeydown=(e)=>{
+  if(e.key==="Enter")$("pydevPkgInstallBtn").click();
+};
+$("pydevNewProjectBtn").onclick=()=>{
+  const name=prompt("Nom du nouveau projet Python :");
+  if(name&&name.trim()) createPydevProject(name.trim());
+};
+$("pydevRenameProjectBtn").onclick=()=>{
+  const current=getCurrentPydevProjectName();
+  const newName=prompt("Nouveau nom du projet :",current);
+  if(newName&&newName.trim()&&newName.trim()!==current) renamePydevProject(current,newName.trim());
+};
+$("pydevDeleteProjectBtn").onclick=()=>{
+  const current=getCurrentPydevProjectName();
+  if(!confirm("Supprimer le projet \u00ab "+current+" \u00bb ?"))return;
+  deletePydevProject(current);
+};
+$("pydevProjectSelect").onchange=function(){
+  const name=this.value;
+  if(name) loadPydevProject(name);
+};
+$("pydevAiBtn").onclick=()=>openPydevAiDialog();
+$("pydevAiDialogClose").onclick=()=>closePydevAiDialog();
+$("pydevAiCancelBtn").onclick=()=>closePydevAiDialog();
+$("pydevAiDialog").onclick=(e)=>{if(e.target.id==="pydevAiDialog")closePydevAiDialog();};
+$("pydevAiSendBtn").onclick=()=>{
+  const prompt=$("pydevAiPrompt").value.trim();
+  if(!prompt){toast("\u26a0\ufe0f D\u00e9cris ce que tu veux");return;}
+
+  closePydevAiDialog();
+  showPage("appPage");
+  state._pydevWaitingApply=true;
+  const code=$("pydevEditor").value;
+  const projectName=getCurrentPydevProjectName();
+  const pkgs=document.querySelectorAll(".pydev-pkg-tag");
+  const pkgList=Array.from(pkgs).map(t=>t.textContent).join(", ");
+  let fullPrompt="[Python Studio - Projet : "+projectName+"]\n\n"+prompt+"\n\n--- CODE ACTUEL ---\n";
+  if(code.trim()) fullPrompt+="\n\u0060\u0060\u0060python\n"+code+"\n\u0060\u0060\u0060\n";
+  if(pkgList) fullPrompt+="\nPackages install\u00e9s : "+pkgList+"\n";
+  fullPrompt+="\n--- FIN DU CODE ---\n\nFournis le code Python complet dans un bloc \u0060\u0060\u0060python. N\u2019utilise PAS input(). Utilise print() pour la sortie. Si tu as besoin de graphiques, utilise matplotlib avec des noms de figures uniques.";
+  $("inputField").value=fullPrompt;
+  sendMessage();
+};
+$("pydevNewBtn").onclick=()=>newPydev();
+$("pydevSaveBtn").onclick=()=>savePydev();
+$("pydevDownloadBtn").onclick=()=>downloadPydev();
+
+// Tab key support for Python editor
+$("pydevEditor").addEventListener("keydown",(e)=>{
+  if(e.key==="Tab"){
+    e.preventDefault();
+    const s=e.target.selectionStart,end=e.target.selectionEnd;
+    e.target.value=e.target.value.substring(0,s)+"    "+e.target.value.substring(end);
+    e.target.selectionStart=e.target.selectionEnd=s+4;
+    e.target.dispatchEvent(new Event("input"));
+  }
+  if(e.key==="Enter"&&e.ctrlKey){
+    e.preventDefault();
+    runPythonCode();
+  }
+});
+
+// Auto-save on edit
+$("pydevEditor").addEventListener("input",()=>autoSavePydev());
+
+// Init Python AI presets
+initPydevAiPresets();
+
+
+</script>
+</body>
+</html>
